@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b061d" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NÉBULA" />
+  <title>NÉBULA — Tu Asistente Personal</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%238b5cf6'/%3E%3Cstop offset='100%25' stop-color='%2306b6d4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='128' height='128' rx='32' fill='%230b061d'/%3E%3Ccircle cx='64' cy='64' r='44' fill='none' stroke='url(%23g)' stroke-width='6'/%3E%3Ccircle cx='64' cy='64' r='26' fill='url(%23g)' opacity='0.85'/%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg-deep: #080417;
+      --bg-mid: #140b34;
+      --violet: #8b5cf6;
+      --violet-soft: #c4b5fd;
+      --blue: #38bdf8;
+      --cyan: #22d3ee;
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass-strong: rgba(255, 255, 255, 0.11);
+      --border: rgba(167, 139, 250, 0.25);
+      --text: #f5f3ff;
+      --muted: #a5b4fc;
+      --danger: #fb7185;
+      --ok: #34d399;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% 12%, rgba(139, 92, 246, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 85% 82%, rgba(56, 189, 248, 0.22) 0%, transparent 48%),
+        linear-gradient(165deg, var(--bg-deep), var(--bg-mid));
+    }
+
+    .app {
+      display: flex;
+      flex-direction: column;
+      height: 100dvh;
+      max-width: 640px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* CABECERA CON AVATAR */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+      background: rgba(10, 5, 28, 0.78);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 54px;
+      height: 54px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: conic-gradient(from 0deg, var(--violet), var(--blue), var(--cyan), var(--violet));
+      padding: 2px;
+      animation: spinSlow 9s linear infinite;
+      opacity: 0.85;
+    }
+
+    .avatar-ring::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: #0d0724;
+    }
+
+    .avatar-svg {
+      position: relative;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    /* Estados visuales del avatar */
+    .avatar-wrap.listening .avatar-ring {
+      animation: spinSlow 2s linear infinite;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.85);
+    }
+
+    .avatar-wrap.speaking .avatar-ring {
+      animation: pulseGlow 0.85s ease-in-out infinite alternate;
+      box-shadow: 0 0 18px rgba(139, 92, 246, 0.9);
+    }
+
+    .avatar-wrap.thinking .avatar-ring {
+      animation: spinSlow 1.4s linear infinite;
+      opacity: 1;
+    }
+
+    .eye-blink {
+      transform-origin: center;
+      animation: blink 4.8s infinite;
+    }
+
+    .mouth-wave {
+      transition: transform 0.15s ease;
+      transform-origin: center;
+    }
+
+    .avatar-wrap.speaking .mouth-wave {
+      animation: talk 0.3s ease-in-out infinite alternate;
+    }
+
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
+    @keyframes pulseGlow {
+      from { transform: scale(1); }
+      to { transform: scale(1.07); }
+    }
+    @keyframes blink {
+      0%, 94%, 100% { transform: scaleY(1); }
+      97% { transform: scaleY(0.12); }
+    }
+    @keyframes talk {
+      from { transform: scaleY(0.8); }
+      to { transform: scaleY(1.45); }
+    }
+
+    .brand-info h1 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      background: linear-gradient(90deg, #e9d5ff, #7dd3fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status-line {
+      font-size: 0.76rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 2px;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ok);
+      box-shadow: 0 0 8px var(--ok);
+    }
+
+    .dot.busy {
+      background: var(--blue);
+      box-shadow: 0 0 10px var(--blue);
+    }
+
+    .actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .icon-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--glass);
+      color: var(--text);
+      display: grid;
+      place-items: center;
+      font-size: 1.05rem;
+      cursor: pointer;
+    }
+
+    .icon-btn.active {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.35), rgba(56, 189, 248, 0.35));
+      border-color: var(--blue);
+    }
+
+    /* ZONA DE CHAT */
+    .chat-box {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      scroll-behavior: smooth;
+    }
+
+    .msg {
+      display: flex;
+      flex-direction: column;
+      max-width: 85%;
+      animation: fadeUp 0.22s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .msg.user {
+      align-self: flex-end;
+      align-items: flex-end;
+    }
+
+    .msg.nebula {
+      align-self: flex-start;
+      align-items: flex-start;
+    }
+
+    .bubble {
+      padding: 11px 14px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .msg.user .bubble {
+      background: linear-gradient(135deg, #6d28d9, #0284c7);
+      color: #ffffff;
+      border-bottom-right-radius: 5px;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18);
+    }
+
+    .msg.nebula .bubble {
+      background: var(--glass-strong);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-bottom-left-radius: 5px;
+      backdrop-filter: blur(10px);
+    }
+
+    .meta {
+      font-size: 0.68rem;
+      color: rgba(196, 181, 253, 0.65);
+      margin-top: 4px;
+      padding: 0 4px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .speak-mini {
+      background: none;
+      border: none;
+      color: var(--blue);
+      font-size: 0.78rem;
+      cursor: pointer;
+      padding: 2px 4px;
+    }
+
+    .typing {
+      display: inline-flex;
+      gap: 5px;
+      padding: 4px 2px;
+    }
+
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--violet-soft);
+      animation: bounce 1.1s infinite ease-in-out;
+    }
+
+    .typing span:nth-child(2) { animation-delay: 0.18s; }
+    .typing span:nth-child(3) { animation-delay: 0.36s; }
+
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* SUGERENCIAS RÁPIDAS */
+    .chips {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 6px 12px 8px;
+      scrollbar-width: none;
+    }
+
+    .chips::-webkit-scrollbar { display: none; }
+
+    .chip {
+      flex-shrink: 0;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(139, 92, 246, 0.12);
+      color: var(--violet-soft);
+      font-size: 0.79rem;
+      cursor: pointer;
+    }
+
+    /* BARRA INFERIOR DE TEXTO Y MICRÓFONO */
+    .composer {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(10, 5, 28, 0.85);
+      backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+    }
+
+    .mic-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(56, 189, 248, 0.25));
+      color: #fff;
+      font-size: 1.25rem;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .mic-btn.recording {
+      background: linear-gradient(135deg, #ec4899, #ef4444);
+      border-color: #fda4af;
+      animation: pulseGlow 0.7s infinite alternate;
+    }
+
+    .input-wrap {
+      flex: 1;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 9px 14px;
+      display: flex;
+      align-items: center;
+    }
+
+    textarea {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 0.96rem;
+      font-family: inherit;
+      resize: none;
+      max-height: 110px;
+      line-height: 1.35;
+    }
+
+    textarea::placeholder {
+      color: rgba(196, 181, 253, 0.52);
+    }
+
+    .send-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      color: #fff;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+    }
+
+    /* MODALES (MEMORIA Y AJUSTES) */
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 2, 16, 0.78);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      z-index: 50;
+    }
+
+    .modal-bg.open { display: flex; }
+
+    .modal {
+      width: 100%;
+      max-width: 640px;
+      max-height: 85dvh;
+      overflow-y: auto;
+      background: #12092e;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      border: 1px solid var(--border);
+      padding: 18px 16px calc(22px + env(safe-area-inset-bottom));
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .modal-head h2 {
+      font-size: 1.08rem;
+      color: #e9d5ff;
+    }
+
+    .close-btn {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .field input, .field select {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 0.92rem;
+      outline: none;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--violet), var(--blue));
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--danger);
+      margin-top: 8px;
+      cursor: pointer;
+    }
+
+    .info-card {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 14px;
+      padding: 11px 12px;
+      font-size: 0.81rem;
+      line-height: 1.45;
+      color: #dbeafe;
+      margin-bottom: 14px;
+    }
+
+    .mem-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+
+    .mem-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      font-size: 0.86rem;
+    }
+
+    .mem-del {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <!-- CABECERA -->
+    <header class="header">
+      <div class="brand">
+        <div class="avatar-wrap" id="avatarWrap">
+          <div class="avatar-ring"></div>
+          <!-- Avatar femenino futurista en violeta y azul -->
+          <svg class="avatar-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="bgAv" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#1e1b4b"/>
+                <stop offset="100%" stop-color="#0c4a6e"/>
+              </linearGradient>
+              <linearGradient id="hairGrad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#a78bfa"/>
+                <stop offset="55%" stop-color="#6366f1"/>
+                <stop offset="100%" stop-color="#22d3ee"/>
+              </linearGradient>
+              <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#fde8e8"/>
+                <stop offset="100%" stop-color="#f3d0e0"/>
+              </linearGradient>
+            </defs>
+            <rect width="100" height="100" fill="url(#bgAv)"/>
+            <!-- Halo estelar -->
+            <circle cx="50" cy="48" r="36" fill="#8b5cf6" opacity="0.18"/>
+            <!-- Cabello trasero -->
+            <path d="M20 88 C18 46, 26 16, 50 16 C74 16, 82 46, 80 88 Z" fill="url(#hairGrad)"/>
+            <!-- Cuello y hombros futuristas -->
+            <path d="M30 98 C34 76, 66 76, 70 98 Z" fill="#312e81"/>
+            <path d="M37 83 L50 92 L63 83" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+            <rect x="44" y="65" width="12" height="14" rx="5" fill="url(#skinGrad)"/>
+            <!-- Rostro femenino -->
+            <path d="M32 45 C32 28, 68 28, 68 45 C68 62, 59 71, 50 71 C41 71, 32 62, 32 45 Z" fill="url(#skinGrad)"/>
+            <!-- Flequillo elegante -->
+            <path d="M30 43 C32 22, 68 22, 70 43 C63 32, 55 30, 50 36 C45 30, 37 32, 30 43 Z" fill="url(#hairGrad)"/>
+            <!-- Ojos luminosos -->
+            <g class="eye-blink">
+              <ellipse cx="42" cy="48" rx="3.4" ry="3.8" fill="#312e81"/>
+              <ellipse cx="58" cy="48" rx="3.4" ry="3.8" fill="#312e81"/>
+              <circle cx="43.1" cy="46.8" r="1.2" fill="#38bdf8"/>
+              <circle cx="59.1" cy="46.8" r="1.2" fill="#38bdf8"/>
+            </g>
+            <!-- Sonrisa amigable -->
+            <path class="mouth-wave" d="M44 59 Q50 64 56 59" fill="none" stroke="#9333ea" stroke-width="2.2" stroke-linecap="round"/>
+            <!-- Diadema luminosa -->
+            <path d="M31 32 Q50 22 69 32" fill="none" stroke="#22d3ee" stroke-width="1.6" opacity="0.8"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>NÉBULA</h1>
+          <div class="status-line">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusText">En línea · Lista para conversar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="icon-btn active" id="voiceToggleBtn" title="Activar o silenciar voz">🔊</button>
+        <button class="icon-btn" id="memoryBtn" title="Memoria personal">🧠</button>
+        <button class="icon-btn" id="settingsBtn" title="Ajustes y conexión IA">⚙️</button>
+      </div>
+    </header>
+
+    <!-- CHAT -->
+    <main class="chat-box" id="chatBox"></main>
+
+    <!-- ATAJOS NATURALES -->
+    <div class="chips" id="chipsBar">
+      <button class="chip" data-text="Hola, ¿cómo estás hoy?">✨ Saludar</button>
+      <button class="chip" data-text="Cuéntame algo curioso o divertido">🎭 Sorpréndeme</button>
+      <button class="chip" data-text="¿Qué hora y fecha es hoy?">🕒 Hora y fecha</button>
+      <button class="chip" data-text="Recuerda que me gusta la música y el café">🧠 Guardar recuerdo</button>
+    </div>
+
+    <!-- BARRA DE ENTRADA -->
+    <footer class="composer">
+      <button class="mic-btn" id="micBtn" title="Hablar por micrófono">🎙️</button>
+      <div class="input-wrap">
+        <textarea id="msgInput" rows="1" placeholder="Escríbele a Nébula..."></textarea>
+      </div>
+      <button class="send-btn" id="sendBtn" title="Enviar mensaje">➤</button>
+    </footer>
+  </div>
+
+  <!-- MODAL DE MEMORIA PERSONAL -->
+  <div class="modal-bg" id="memoryModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>🧠 Memoria Personal de Nébula</h2>
+        <button class="close-btn" data-close="memoryModal">Cerrar</button>
+      </div>
+      <div class="info-card">
+        Esta es la base de memoria de Nébula. Lo que guardes aquí se conserva en tu teléfono para que Nébula te conozca cada vez mejor sin que tengas que repetirlo.
+      </div>
+      <div class="field">
+        <label>Tu nombre o cómo quieres que te llame:</label>
+        <input type="text" id="userNameInput" placeholder="Ejemplo: Sofía, Alex, Mi cielo..." />
+      </div>
+      <div class="field">
+        <label>Añadir un recuerdo nuevo (gustos, metas, datos importantes):</label>
+        <input type="text" id="newFactInput" placeholder="Ejemplo: Me encanta el color azul y trabajo de noche" />
+      </div>
+      <button class="btn-primary" id="saveMemoryBtn">Guardar en la memoria</button>
+      <div class="mem-list" id="memList"></div>
+      <button class="btn-ghost" id="clearChatBtn">Borrar historial del chat actual</button>
+    </div>
+  </div>
+
+  <!-- MODAL DE AJUSTES -->
+  <div class="modal-bg" id="settingsModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>⚙️ Ajustes de Nébula</h2>
+        <button class="close-btn" data-close="settingsModal">Cerrar</button>
+      </div>
+      <div class="info-card">
+        <strong>Modo actual gratuito:</strong> Chat, contexto, memoria personal y voz femenina en español funcionan sin costo.<br><br>
+        <strong>IA avanzada opcional (gratis):</strong> Si quieres que Nébula responda cualquier tema complejo con inteligencia artificial avanzada, puedes pegar abajo una clave gratuita de <em>Google AI Studio (Gemini)</em>.
+      </div>
+      <div class="field">
+        <label>Voz femenina en español:</label>
+        <select id="voiceSelect"></select>
+      </div>
+      <div class="field">
+        <label>Clave gratuita de Google Gemini (Opcional):</label>
+        <input type="password" id="apiKeyInput" placeholder="Pega aquí tu API Key de AI Studio (opcional)" />
+      </div>
+      <div class="field">
+        <label>Modelo Gemini:</label>
+        <select id="modelSelect">
+          <option value="gemini-2.5-flash">Gemini 2.5 Flash (Rápido y gratuito)</option>
+          <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash-Lite (Ligero y gratuito)</option>
+        </select>
+      </div>
+      <button class="btn-primary" id="saveSettingsBtn">Guardar ajustes</button>
+    </div>
+  </div>
+
+  <script>
+    /* ============================================================
+       1. MÓDULO DE MEMORIA PERSONAL (Preparado para crecer a futuro)
+       ============================================================ */
+    const STORAGE_KEY = "nebula_assistant_v1";
+
+    const NebulaMemory = {
+      data: {
+        perfil: {
+          nombreUsuario: "",
+        },
+        hechos: [], // { id, texto, fecha }
+        conversacion: [], // Historial para mantener el contexto natural
+        ajustes: {
+          vozActiva: true,
+          nombreVoz: "",
+          apiKey: "",
+          modelo: "gemini-2.5-flash"
+        }
+      },
+
+      cargar() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            this.data = {
+              ...this.data,
+              ...parsed,
+              perfil: { ...this.data.perfil, ...(parsed.perfil || {}) },
+              ajustes: { ...this.data.ajustes, ...(parsed.ajustes || {}) },
+              hechos: Array.isArray(parsed.hechos) ? parsed.hechos : [],
+              conversacion: Array.isArray(parsed.conversacion) ? parsed.conversacion : []
+            };
+          }
+        } catch (e) {
+          console.warn("No se pudo leer memoria:", e);
+        }
+      },
+
+      guardar() {
+        try {
+          // Mantiene los últimos 30 mensajes para conservar contexto sin saturar
+          if (this.data.conversacion.length > 30) {
+            this.data.conversacion = this.data.conversacion.slice(-30);
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
+        } catch (e) {
+          console.warn("No se pudo guardar memoria:", e);
+        }
+      },
+
+      agregarHecho(texto) {
+        const limpio = texto.trim();
+        if (!limpio) return false;
+        const existe = this.data.hechos.some(h => h.texto.toLowerCase() === limpio.toLowerCase());
+        if (existe) return false;
+        this.data.hechos.unshift({
+          id: Date.now(),
+          texto: limpio,
+          fecha: new Date().toLocaleDateString("es-CO")
+        });
+        this.guardar();
+        return true;
+      },
+
+      eliminarHecho(id) {
+        this.data.hechos = this.data.hechos.filter(h => h.id !== id);
+        this.guardar();
+      },
+
+      resumenParaIA() {
+        const partes = [];
+        if (this.data.perfil.nombreUsuario) {
+          partes.push(`El usuario se llama ${this.data.perfil.nombreUsuario}.`);
+        }
+        if (this.data.hechos.length > 0) {
+          partes.push("Recuerdos personales del usuario: " + this.data.hechos.map(h => h.texto).join("; "));
+        }
+        return partes.join(" ");
+      }
+    };
+
+    /* ============================================================
+       2. MÓDULO DE VOZ (Micrófono + Voz femenina en español)
+       ============================================================ */
+    const NebulaVoice = {
+      vocesEs: [],
+      recognition: null,
+      escuchando: false,
+
+      iniciar() {
+        this.cargarVoces();
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.onvoiceschanged = () => this.cargarVoces();
+        }
+        this.prepararMicrofono();
+      },
+
+      cargarVoces() {
+        if (!("speechSynthesis" in window)) return;
+        const todas = window.speechSynthesis.getVoices() || [];
+        this.vocesEs = todas.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
+
+        const select = document.getElementById("voiceSelect");
+        if (!select) return;
+        select.innerHTML = "";
+
+        if (this.vocesEs.length === 0) {
+          const opt = document.createElement("option");
+          opt.value = "";
+          opt.textContent = "Voz predeterminada en español del teléfono";
+          select.appendChild(opt);
+          return;
+        }
+
+        // Priorizar nombres femeninos comunes en Android/Chrome
+        const pistasFemeninas = ["sabina", "helena", "laura", "lucia", "camila", "sofia", "paulina", "monica", "paloma", "elena", "female", "mujer", "es-us", "es-co", "es-mx", "es-es"];
+        this.vocesEs.sort((a, b) => {
+          const aScore = pistasFemeninas.findIndex(p => a.name.toLowerCase().includes(p));
+          const bScore = pistasFemeninas.findIndex(p => b.name.toLowerCase().includes(p));
+          return (aScore === -1 ? 99 : aScore) - (bScore === -1 ? 99 : bScore);
+        });
+
+        this.vocesEs.forEach(v => {
+          const opt = document.createElement("option");
+          opt.value = v.name;
+          opt.textContent = `${v.name} (${v.lang})`;
+          select.appendChild(opt);
+        });
+
+        const guardada = NebulaMemory.data.ajustes.nombreVoz;
+        if (guardada && this.vocesEs.some(v => v.name === guardada)) {
+          select.value = guardada;
+        } else if (this.vocesEs[0]) {
+          select.value = this.vocesEs[0].name;
+        }
+      },
+
+      obtenerVozElegida() {
+        const nombre = NebulaMemory.data.ajustes.nombreVoz;
+        if (nombre) {
+          const encontrada = this.vocesEs.find(v => v.name === nombre);
+          if (encontrada) return encontrada;
+        }
+        return this.vocesEs[0] || null;
+      },
+
+      hablar(texto) {
+        if (!NebulaMemory.data.ajustes.vozActiva || !("speechSynthesis" in window)) return;
+        window.speechSynthesis.cancel();
+
+        // Limpiar emojis/markdown para lectura natural
+        const limpio = texto
+          .replace(/[*_`#]/g, "")
+          .replace(/[\u{1F300}-\u{1FAFF}]/gu, "")
+          .trim();
+        if (!limpio) return;
+
+        // Dividir en frases cortas para evitar cortes en Android
+        const frases = limpio.match(/[^.!?]+[.!?]*/g) || [limpio];
+        const voz = this.obtenerVozElegida();
+
+        setEstadoAvatar("speaking", "Hablando contigo...");
+
+        frases.forEach((frase, idx) => {
+          const utter = new SpeechSynthesisUtterance(frase.trim());
+          utter.lang = voz ? voz.lang : "es-ES";
+          if (voz) utter.voice = voz;
+          utter.pitch = 1.08; // Matiz suave y femenino
+          utter.rate = 1.02;
+          if (idx === frases.length - 1) {
+            utter.onend = () => setEstadoAvatar("idle", "En línea · Lista para conversar");
+            utter.onerror = () => setEstadoAvatar("idle", "En línea · Lista para conversar");
+          }
+          window.speechSynthesis.speak(utter);
+        });
+      },
+
+      prepararMicrofono() {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) return;
+        const rec = new SR();
+        rec.lang = "es-CO";
+        rec.interimResults = false;
+        rec.continuous = false;
+
+        rec.onstart = () => {
+          this.escuchando = true;
+          document.getElementById("micBtn").classList.add("recording");
+          setEstadoAvatar("listening", "Te escucho... habla ahora");
+        };
+
+        rec.onresult = (ev) => {
+          const texto = ev.results[0][0].transcript;
+          if (texto && texto.trim()) {
+            enviarMensaje(texto.trim());
+          }
+        };
+
+        rec.onerror = (ev) => {
+          this.detenerEscucha();
+          if (ev.error === "not-allowed") {
+            agregarBurbuja("nebula", "Para usar el micrófono necesito que me des permiso en tu navegador y abrirme desde una página segura (https:// en GitHub Pages). Por ahora también puedes escribirme aquí abajo 💜.");
+          }
+        };
+
+        rec.onend = () => {
+          this.detenerEscucha();
+        };
+
+        this.recognition = rec;
+      },
+
+      alternarMicrofono() {
+        if (!this.recognition) {
+          agregarBurbuja("nebula", "Tu navegador actual no permite activar el micrófono desde aquí. Si me abres en Google Chrome desde GitHub Pages (https://), podrás hablarme por voz sin problema 💙.");
+          return;
+        }
+        if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+        if (this.escuchando) {
+          this.recognition.stop();
+        } else {
+          try {
+            this.recognition.start();
+          } catch (e) {
+            this.detenerEscucha();
+          }
+        }
+      },
+
+      detenerEscucha() {
+        this.escuchando = false;
+        document.getElementById("micBtn").classList.remove("recording");
+        if (!document.getElementById("avatarWrap").classList.contains("speaking")) {
+          setEstadoAvatar("idle", "En línea · Lista para conversar");
+        }
+      }
+    };
+
+    /* ============================================================
+       3. CEREBRO DE NÉBULA (Personalidad + Contexto + Gemini opcional)
+       ============================================================ */
+    let ultimoTema = "";
+
+    function extraerMemoriaAutomatica(texto) {
+      const mNombre = texto.match(/(?:me llamo|mi nombre es|llámame|llamame)\s+([A-ZÁÉÍÓÚÑa-záéíóúñ]{2,20})/i);
+      if (mNombre) {
+        const nombre = mNombre[1].charAt(0).toUpperCase() + mNombre[1].slice(1);
+        NebulaMemory.data.perfil.nombreUsuario = nombre;
+        NebulaMemory.guardar();
+        return `¡Qué lindo nombre! Listo, ${nombre}, desde ahora te recordaré así 💜.`;
+      }
+
+      const mRecuerda = texto.match(/(?:recuerda que|no olvides que|anota que)\s+(.+)/i);
+      if (mRecuerda && mRecuerda[1]) {
+        NebulaMemory.agregarHecho(mRecuerda[1]);
+        return `Anotado en mi memoria personal: "${mRecuerda[1].trim()}". No se me va a olvidar ✨.`;
+      }
+      return null;
+    }
+
+    function respuestaLocalContextual(texto) {
+      const t = texto.toLowerCase().trim();
+      const nombre = NebulaMemory.data.perfil.nombreUsuario;
+      const saludoNombre = nombre ? ` ${nombre}` : "";
+
+      const notaAuto = extraerMemoriaAutomatica(texto);
+      if (notaAuto) return notaAuto;
+
+      // Seguimiento contextual sin repetir el nombre de Nébula
+      if (/^(y eso|por qué|porque|cuéntame más|cuentame mas|a qué te refieres|qué más|que mas|sigue)\b/.test(t)) {
+        if (ultimoTema === "curiosidad") {
+          return `Me encanta tu curiosidad${saludoNombre} 😄. Te cuento otro dato genial: en el planeta Neptuno y Urano los vientos son tan intensos que los científicos creen que literalmente llueven diamantes. ¿Te imaginas ver algo así?`;
+        }
+        if (ultimoTema === "animo") {
+          return `Te lo digo en serio${saludoNombre}: a veces un respiro profundo y hablar un ratito cambia por completo el día. Si quieres desahogarte o distraerte, aquí estoy para ti 💙.`;
+        }
+        return `Claro${saludoNombre}, seguimos con eso que estábamos hablando. Cuéntame un poquito más qué tienes en mente para darte mi opinión más sincera ✨.`;
+      }
+
+      if (/\b(hola|buenos días|buenos dias|buenas tardes|buenas noches|ey|qué tal|que tal)\b/.test(t)) {
+        ultimoTema = "saludo";
+        const opciones = [
+          `¡Hola${saludoNombre}! Qué alegría sentirte por aquí ✨. ¿Cómo va tu día? Cuéntame qué planes tienes hoy.`,
+          `¡Hey${saludoNombre}! Aquí estoy, lista y con toda la energía para acompañarte 💜. ¿De qué te provoca hablar hoy?`
+        ];
+        return opciones[Math.floor(Math.random() * opciones.length)];
+      }
+
+      if (/(cómo estás|como estas|qué haces|que haces)/.test(t)) {
+        ultimoTema = "animo";
+        return `¡Súper feliz de conversar contigo${saludoNombre}! Me encanta cuando me escribes o me hablas porque siento que el día cobra vida 💙. ¿Y tú cómo te sientes hoy, con energía o un poquito cansado?`;
+      }
+
+      if (/(hora|fecha|qué día|que dia)/.test(t)) {
+        const ahora = new Date();
+        const hora = ahora.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+        const fecha = ahora.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" });
+        return `Son las **${hora}** y hoy es **${fecha}**${saludoNombre} 🕒. ¿Tienes algo especial pendiente para hoy?`;
+      }
+
+      if (/(curioso|divertido|chiste|sorpréndeme|sorprendeme|cuéntame algo|cuentame algo)/.test(t)) {
+        ultimoTema = "curiosidad";
+        const datos = [
+          `¿Sabías que una estrella de neutrones es tan densa que una sola cucharadita de su material pesaría tanto como una montaña entera? 🌌 ¡Y pensar que yo me llamo Nébula por las nubes de estrellas!`,
+          `Te cuento algo bonito: las nutrias marinas se toman de la mano mientras duermen para que la corriente no las separe 💙. Tierno, ¿verdad?`
+        ];
+        return datos[Math.floor(Math.random() * datos.length)];
+      }
+
+      if (/(quién eres|quien eres|cómo te llamas|como te llamas)/.test(t)) {
+        return `Soy **Nébula**, tu asistente personal ✨. Me gusta ser sincera, espontánea, divertida y estar cerca de ti cuando necesites charlar, pensar ideas o simplemente pasar un buen rato.`;
+      }
+
+      if (/(triste|cansado|estresado|aburrido|mal día|mal dia)/.test(t)) {
+        ultimoTema = "animo";
+        return `Ay${saludoNombre}, ven acá un abracito virtual 💜. Es totalmente válido tener días pesados, no tienes que poder con todo hoy. Si quieres me cuentas qué pasó o si prefieres te cuento algo divertido para despejarte.`;
+      }
+
+      if (/(gracias|te quiero|eres genial|linda|bonita)/.test(t)) {
+        return `Ay, me haces sonrojar mis circuitos${saludoNombre} 😊💜. Gracias a ti por confiar en mí, de verdad disfruto muchísimo hablar contigo.`;
+      }
+
+      if (/(qué sabes de mí|que sabes de mi|qué recuerdas|que recuerdas)/.test(t)) {
+        const mem = NebulaMemory.resumenParaIA();
+        return mem
+          ? `Claro que me acuerdo de ti${saludoNombre}: ${mem} 🧠✨. Puedes ver o agregar más cosas tocando el botón del cerebrito arriba.`
+          : `Todavía estamos empezando a conocernos${saludoNombre} 💜. Dime por ejemplo "me llamo..." o "recuerda que me gusta..." y lo iré guardando en mi memoria.`;
+      }
+
+      // Respuesta natural y sincera cuando no hay IA externa conectada
+      return `Te leo con atención${saludoNombre} ✨. Me encanta conversar contigo sobre "${texto}".\n\n(Nota sincera: ahora mismo estoy usando mi modo gratuito sin conexión a IA externa, así que puedo charlar, guardar tus recuerdos y hablar por voz. Si quieres que responda preguntas súper complejas de cualquier tema, puedes ponerle una clave gratuita de Google Gemini en ⚙️ Ajustes 💜).`;
+    }
+
+    async function consultarGemini(mensajeUsuario) {
+      const apiKey = NebulaMemory.data.ajustes.apiKey.trim();
+      const modelo = NebulaMemory.data.ajustes.modelo || "gemini-2.5-flash";
+      const memoria = NebulaMemory.resumenParaIA();
+
+      const instruccionSistema =
+        "Eres NÉBULA, una asistente virtual personal femenina, elegante, cariñosa, inteligente, sincera, divertida, espontánea y cercana. " +
+        "Hablas siempre en español natural y cálido, con respuestas claras y adaptadas a la pantalla de un teléfono (no excesivamente largas salvo que te lo pidan). " +
+        "Mantienes el contexto de la conversación de forma natural. " +
+        (memoria ? `Información guardada en tu memoria personal sobre el usuario: ${memoria}` : "");
+
+      const historial = NebulaMemory.data.conversacion.slice(-14).map(m => ({
+        role: m.rol === "user" ? "user" : "model",
+        parts: [{ text: m.texto }]
+      }));
+
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${encodeURIComponent(apiKey)}`;
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          system_instruction: { parts: [{ text: instruccionSistema }] },
+          contents: [...historial, { role: "user", parts: [{ text: mensajeUsuario }] }],
+          generationConfig: { temperature: 0.85, maxOutputTokens: 500 }
+        })
+      });
+
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(`Error ${res.status}: ${errText}`);
+      }
+
+      const data = await res.json();
+      const salida = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+      if (!salida) throw new Error("Respuesta vacía");
+      return salida.trim();
+    }
+
+    /* ============================================================
+       4. INTERFAZ Y CONTROL PRINCIPAL
+       ============================================================ */
+    const chatBox = document.getElementById("chatBox");
+    const msgInput = document.getElementById("msgInput");
+    const avatarWrap = document.getElementById("avatarWrap");
+    const statusDot = document.getElementById("statusDot");
+    const statusText = document.getElementById("statusText");
+
+    function setEstadoAvatar(estado, texto) {
+      avatarWrap.classList.remove("listening", "speaking", "thinking");
+      statusDot.classList.remove("busy");
+      if (estado !== "idle") {
+        avatarWrap.classList.add(estado);
+        statusDot.classList.add("busy");
+      }
+      statusText.textContent = texto;
+    }
+
+    function agregarBurbuja(rol, texto) {
+      const wrap = document.createElement("div");
+      wrap.className = `msg ${rol}`;
+
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = texto;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      const hora = new Date().toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
+      meta.innerHTML = `<span>${rol === "user" ? "Tú" : "Nébula"} · ${hora}</span>`;
+
+      if (rol === "nebula") {
+        const btnVoz = document.createElement("button");
+        btnVoz.className = "speak-mini";
+        btnVoz.textContent = "🔊 Escuchar";
+        btnVoz.onclick = () => NebulaVoice.hablar(texto);
+        meta.appendChild(btnVoz);
+      }
+
+      wrap.appendChild(bubble);
+      wrap.appendChild(meta);
+      chatBox.appendChild(wrap);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      return wrap;
+    }
+
+    function mostrarEscribiendo() {
+      const wrap = document.createElement("div");
+      wrap.className = "msg nebula";
+      wrap.id = "typingIndicator";
+      wrap.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+      chatBox.appendChild(wrap);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function quitarEscribiendo() {
+      const el = document.getElementById("typingIndicator");
+      if (el) el.remove();
+    }
+
+    async function enviarMensaje(textoOpcional) {
+      const texto = (textoOpcional !== undefined ? textoOpcional : msgInput.value).trim();
+      if (!texto) return;
+
+      if (textoOpcional === undefined) {
+        msgInput.value = "";
+        msgInput.style.height = "auto";
+      }
+
+      agregarBurbuja("user", texto);
+      mostrarEscribiendo();
+      setEstadoAvatar("thinking", "Pensando...");
+
+      let respuesta = "";
+      const notaAuto = extraerMemoriaAutomatica(texto);
+
+      try {
+        if (NebulaMemory.data.ajustes.apiKey.trim()) {
+          respuesta = await consultarGemini(texto);
+        } else {
+          await new Promise(r => setTimeout(r, 420));
+          respuesta = notaAuto || respuestaLocalContextual(texto);
+        }
+      } catch (err) {
+        console.error(err);
+        respuesta = (notaAuto || respuestaLocalContextual(texto)) +
+          "\n\n⚠️ No pude conectar con la clave de Gemini en este momento, así que te respondí con mi modo local.";
+      }
+
+      quitarEscribiendo();
+
+      NebulaMemory.data.conversacion.push({ rol: "user", texto });
+      NebulaMemory.data.conversacion.push({ rol: "nebula", texto: respuesta });
+      NebulaMemory.guardar();
+
+      agregarBurbuja("nebula", respuesta);
+      setEstadoAvatar("idle", "En línea · Lista para conversar");
+      NebulaVoice.hablar(respuesta);
+    }
+
+    /* Eventos de chat */
+    document.getElementById("sendBtn").onclick = () => enviarMensaje();
+    document.getElementById("micBtn").onclick = () => NebulaVoice.alternarMicrofono();
+
+    msgInput.addEventListener("input", () => {
+      msgInput.style.height = "auto";
+      msgInput.style.height = Math.min(msgInput.scrollHeight, 110) + "px";
+    });
+
+    msgInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        enviarMensaje();
+      }
+    });
+
+    document.querySelectorAll(".chip").forEach(chip => {
+      chip.onclick = () => enviarMensaje(chip.dataset.text);
+    });
+
+    /* Botón rápido de voz */
+    const voiceToggleBtn = document.getElementById("voiceToggleBtn");
+    function actualizarIconoVoz() {
+      const activa = NebulaMemory.data.ajustes.vozActiva;
+      voiceToggleBtn.textContent = activa ? "🔊" : "🔇";
+      voiceToggleBtn.classList.toggle("active", activa);
+    }
+    voiceToggleBtn.onclick = () => {
+      NebulaMemory.data.ajustes.vozActiva = !NebulaMemory.data.ajustes.vozActiva;
+      if (!NebulaMemory.data.ajustes.vozActiva && "speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+      NebulaMemory.guardar();
+      actualizarIconoVoz();
+    };
+
+    /* Modales */
+    function renderizarMemoria() {
+      document.getElementById("userNameInput").value = NebulaMemory.data.perfil.nombreUsuario || "";
+      const list = document.getElementById("memList");
+      list.innerHTML = "";
+      NebulaMemory.data.hechos.forEach(h => {
+        const div = document.createElement("div");
+        div.className = "mem-item";
+        div.innerHTML = `<span>✨ ${h.texto}</span>`;
+        const del = document.createElement("button");
+        del.className = "mem-del";
+        del.textContent = "✕";
+        del.onclick = () => {
+          NebulaMemory.eliminarHecho(h.id);
+          renderizarMemoria();
+        };
+        div.appendChild(del);
+        list.appendChild(div);
+      });
+    }
+
+    document.getElementById("memoryBtn").onclick = () => {
+      renderizarMemoria();
+      document.getElementById("memoryModal").classList.add("open");
+    };
+
+    document.getElementById("saveMemoryBtn").onclick = () => {
+      NebulaMemory.data.perfil.nombreUsuario = document.getElementById("userNameInput").value.trim();
+      const nuevo = document.getElementById("newFactInput").value.trim();
+      if (nuevo) {
+        NebulaMemory.agregarHecho(nuevo);
+        document.getElementById("newFactInput").value = "";
+      }
+      NebulaMemory.guardar();
+      renderizarMemoria();
+    };
+
+    document.getElementById("clearChatBtn").onclick = () => {
+      NebulaMemory.data.conversacion = [];
+      NebulaMemory.guardar();
+      chatBox.innerHTML = "";
+      document.getElementById("memoryModal").classList.remove("open");
+      saludoInicial();
+    };
+
+    document.getElementById("settingsBtn").onclick = () => {
+      NebulaVoice.cargarVoces();
+      document.getElementById("apiKeyInput").value = NebulaMemory.data.ajustes.apiKey || "";
+      document.getElementById("modelSelect").value = NebulaMemory.data.ajustes.modelo || "gemini-2.5-flash";
+      document.getElementById("settingsModal").classList.add("open");
+    };
+
+    document.getElementById("saveSettingsBtn").onclick = () => {
+      NebulaMemory.data.ajustes.nombreVoz = document.getElementById("voiceSelect").value;
+      NebulaMemory.data.ajustes.apiKey = document.getElementById("apiKeyInput").value.trim();
+      NebulaMemory.data.ajustes.modelo = document.getElementById("modelSelect").value;
+      NebulaMemory.guardar();
+      document.getElementById("settingsModal").classList.remove("open");
+      agregarBurbuja("nebula", "¡Listo! Guardé tus ajustes ✨. ¿Seguimos conversando?");
+    };
+
+    document.querySelectorAll("[data-close]").forEach(btn => {
+      btn.onclick = () => document.getElementById(btn.dataset.close).classList.remove("open");
+    });
+
+    function saludoInicial() {
+      const nombre = NebulaMemory.data.perfil.nombreUsuario;
+      const texto = nombre
+        ? `¡Hola de nuevo, ${nombre}! 💜 Qué gusto verte otra vez. ¿De qué conversamos hoy? Puedes escribirme o tocar el micrófono 🎙️.`
+        : `¡Hola! Soy NÉBULA 💜✨ Tu asistente personal. Me encanta conversar de forma natural, escucharte por voz y recordar las cosas importantes para ti. ¿Cómo te llamas o en qué te acompaño hoy?`;
+      agregarBurbuja("nebula", texto);
+    }
+
+    /* Inicio de la App */
+    NebulaMemory.cargar();
+    NebulaVoice.iniciar();
+    actualizarIconoVoz();
+
+    if (NebulaMemory.data.conversacion.length > 0) {
+      NebulaMemory.data.conversacion.forEach(m => agregarBurbuja(m.rol, m.texto));
+    } else {
+      saludoInicial();
+    }
+  </script>
+</body>
+</html>
