@@ -30,9 +30,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     html, body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
+      height: 100%; width: 100%; overflow: hidden;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       color: var(--text);
       background:
@@ -41,146 +39,87 @@
         linear-gradient(165deg, var(--bg-deep), var(--bg-mid));
     }
 
-    .app {
-      display: flex;
-      flex-direction: column;
-      height: 100dvh;
-      max-width: 640px;
-      margin: 0 auto;
-      position: relative;
-    }
+    .app { display: flex; flex-direction: column; height: 100dvh; max-width: 640px; margin: 0 auto; position: relative; }
 
     .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: calc(10px + env(safe-area-inset-top)) 12px 10px;
-      background: rgba(10, 5, 28, 0.78);
-      backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
-      z-index: 10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: calc(10px + env(safe-area-inset-top)) 10px 10px;
+      background: rgba(10, 5, 28, 0.8); backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border); z-index: 10;
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
-
-    .avatar-wrap {
-      position: relative;
-      width: 52px;
-      height: 52px;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-    }
-
+    .brand { display: flex; align-items: center; gap: 9px; min-width: 0; }
+    .avatar-wrap { position: relative; width: 48px; height: 48px; flex-shrink: 0; display: grid; place-items: center; }
     .avatar-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
+      position: absolute; inset: 0; border-radius: 50%;
       background: conic-gradient(from 0deg, var(--violet), var(--blue), var(--cyan), var(--violet));
-      padding: 2px;
-      animation: spinSlow 9s linear infinite;
-      opacity: 0.85;
+      padding: 2px; animation: spinSlow 9s linear infinite; opacity: 0.85;
     }
-
-    .avatar-ring::after {
-      content: "";
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: #0d0724;
-    }
-
-    .avatar-svg { position: relative; width: 44px; height: 44px; border-radius: 50%; z-index: 2; overflow: hidden; }
-
+    .avatar-ring::after { content: ""; display: block; width: 100%; height: 100%; border-radius: 50%; background: #0d0724; }
+    .avatar-svg { position: relative; width: 41px; height: 41px; border-radius: 50%; z-index: 2; overflow: hidden; }
     .avatar-wrap.listening .avatar-ring { animation: spinSlow 2s linear infinite; box-shadow: 0 0 18px rgba(56, 189, 248, 0.85); }
     .avatar-wrap.speaking .avatar-ring { animation: pulseGlow 0.85s ease-in-out infinite alternate; box-shadow: 0 0 18px rgba(139, 92, 246, 0.9); }
     .avatar-wrap.thinking .avatar-ring { animation: spinSlow 1.4s linear infinite; opacity: 1; }
-
     .eye-blink { transform-origin: center; animation: blink 4.8s infinite; }
     .mouth-wave { transition: transform 0.15s ease; transform-origin: center; }
     .avatar-wrap.speaking .mouth-wave { animation: talk 0.3s ease-in-out infinite alternate; }
-
     @keyframes spinSlow { to { transform: rotate(360deg); } }
     @keyframes pulseGlow { from { transform: scale(1); } to { transform: scale(1.07); } }
     @keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(0.12); } }
     @keyframes talk { from { transform: scaleY(0.8); } to { transform: scaleY(1.45); } }
 
+    .brand-info { min-width: 0; }
     .brand-info h1 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
+      font-size: 1rem; font-weight: 700; letter-spacing: 0.08em;
       background: linear-gradient(90deg, #e9d5ff, #7dd3fc);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-
-    .status-line { font-size: 0.74rem; color: var(--muted); display: flex; align-items: center; gap: 6px; margin-top: 2px; }
+    .status-line { font-size: 0.71rem; color: var(--muted); display: flex; align-items: center; gap: 5px; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 8px var(--ok); flex-shrink: 0; }
     .dot.busy { background: var(--blue); box-shadow: 0 0 10px var(--blue); }
 
-    .actions { display: flex; gap: 5px; }
-
+    .actions { display: flex; gap: 4px; flex-shrink: 0; }
     .icon-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 11px;
-      border: 1px solid var(--border);
-      background: var(--glass);
-      color: var(--text);
-      display: grid;
-      place-items: center;
-      font-size: 1rem;
-      cursor: pointer;
+      width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--glass); color: var(--text); display: grid; place-items: center; font-size: 0.95rem; cursor: pointer;
     }
-
     .icon-btn.active {
       background: linear-gradient(135deg, rgba(139, 92, 246, 0.38), rgba(56, 189, 248, 0.38));
-      border-color: var(--blue);
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+      border-color: var(--blue); box-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
     }
 
-    .chat-box {
-      flex: 1;
-      overflow-y: auto;
-      padding: 14px 12px 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      scroll-behavior: smooth;
-    }
-
-    .msg { display: flex; flex-direction: column; max-width: 85%; animation: fadeUp 0.22s ease; }
+    .chat-box { flex: 1; overflow-y: auto; padding: 14px 12px 10px; display: flex; flex-direction: column; gap: 12px; scroll-behavior: smooth; }
+    .msg { display: flex; flex-direction: column; max-width: 86%; animation: fadeUp 0.22s ease; }
     @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .msg.user { align-self: flex-end; align-items: flex-end; }
     .msg.nebula { align-self: flex-start; align-items: flex-start; }
 
     .bubble {
-      padding: 11px 14px;
-      border-radius: 18px;
-      font-size: 0.95rem;
-      line-height: 1.45;
-      white-space: pre-wrap;
-      word-break: break-word;
+      padding: 11px 14px; border-radius: 18px; font-size: 0.94rem; line-height: 1.45;
+      white-space: pre-wrap; word-break: break-word;
     }
-
     .msg.user .bubble {
-      background: linear-gradient(135deg, #6d28d9, #0284c7);
-      color: #ffffff;
-      border-bottom-right-radius: 5px;
-      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18);
+      background: linear-gradient(135deg, #6d28d9, #0284c7); color: #fff;
+      border-bottom-right-radius: 5px; box-shadow: 0 4px 14px rgba(56, 189, 248, 0.18);
+    }
+    .msg.nebula .bubble {
+      background: var(--glass-strong); border: 1px solid var(--border); color: var(--text);
+      border-bottom-left-radius: 5px; backdrop-filter: blur(10px);
     }
 
-    .msg.nebula .bubble {
-      background: var(--glass-strong);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-bottom-left-radius: 5px;
-      backdrop-filter: blur(10px);
+    .bubble img, .bubble video {
+      display: block; max-width: 100%; max-height: 270px; border-radius: 12px;
+      margin-bottom: 8px; background: #000; object-fit: cover;
+    }
+
+    .media-tools { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+    .mini-pill {
+      border: 1px solid rgba(56, 189, 248, 0.45); background: rgba(15, 23, 42, 0.45);
+      color: #e0f2fe; border-radius: 999px; padding: 4px 10px; font-size: 0.74rem; cursor: pointer; text-decoration: none;
     }
 
     .meta { font-size: 0.68rem; color: rgba(196, 181, 253, 0.65); margin-top: 4px; padding: 0 4px; display: flex; gap: 8px; align-items: center; }
-    .speak-mini { background: none; border: none; color: var(--blue); font-size: 0.78rem; cursor: pointer; padding: 2px 4px; }
+    .speak-mini { background: none; border: none; color: var(--blue); font-size: 0.76rem; cursor: pointer; padding: 2px 4px; }
 
     .typing { display: inline-flex; gap: 5px; padding: 4px 2px; }
     .typing span { width: 7px; height: 7px; border-radius: 50%; background: var(--violet-soft); animation: bounce 1.1s infinite ease-in-out; }
@@ -188,102 +127,77 @@
     .typing span:nth-child(3) { animation-delay: 0.36s; }
     @keyframes bounce { 0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1.1); opacity: 1; } }
 
-    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 6px 12px 8px; scrollbar-width: none; }
+    .chips { display: flex; gap: 8px; overflow-x: auto; padding: 6px 12px 6px; scrollbar-width: none; }
     .chips::-webkit-scrollbar { display: none; }
-    .chip { flex-shrink: 0; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border); background: rgba(139, 92, 246, 0.12); color: var(--violet-soft); font-size: 0.79rem; cursor: pointer; }
+    .chip { flex-shrink: 0; padding: 7px 12px; border-radius: 999px; border: 1px solid var(--border); background: rgba(139, 92, 246, 0.12); color: var(--violet-soft); font-size: 0.78rem; cursor: pointer; }
+
+    /* PREVIEW ADJUNTO */
+    .attach-bar {
+      display: none; align-items: center; justify-content: space-between; gap: 10px;
+      margin: 0 10px 6px; padding: 8px 10px; border-radius: 16px;
+      background: rgba(139, 92, 246, 0.16); border: 1px solid var(--border);
+    }
+    .attach-bar.show { display: flex; }
+    .attach-left { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    .attach-thumb { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; background: #000; flex-shrink: 0; }
+    .attach-name { font-size: 0.8rem; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .attach-btns { display: flex; gap: 6px; flex-shrink: 0; }
 
     .composer {
-      display: flex;
-      align-items: flex-end;
-      gap: 8px;
-      padding: 8px 10px calc(10px + env(safe-area-inset-bottom));
-      background: rgba(10, 5, 28, 0.85);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid var(--border);
+      display: flex; align-items: flex-end; gap: 6px;
+      padding: 8px 8px calc(10px + env(safe-area-inset-bottom));
+      background: rgba(10, 5, 28, 0.85); backdrop-filter: blur(16px); border-top: 1px solid var(--border);
     }
 
-    .mic-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: 1px solid rgba(56, 189, 248, 0.45);
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.28), rgba(56, 189, 248, 0.25));
-      color: #fff;
-      font-size: 1.25rem;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
+    .round-btn {
+      width: 42px; height: 42px; border-radius: 50%; border: 1px solid rgba(56, 189, 248, 0.45);
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.25), rgba(56, 189, 248, 0.22));
+      color: #fff; font-size: 1.15rem; flex-shrink: 0; display: grid; place-items: center; cursor: pointer;
     }
+    .round-btn.recording { background: linear-gradient(135deg, #ec4899, #ef4444); border-color: #fda4af; animation: pulseGlow 0.7s infinite alternate; }
 
-    .mic-btn.recording {
-      background: linear-gradient(135deg, #ec4899, #ef4444);
-      border-color: #fda4af;
-      animation: pulseGlow 0.7s infinite alternate;
-    }
-
-    .input-wrap { flex: 1; background: var(--glass); border: 1px solid var(--border); border-radius: 22px; padding: 9px 14px; display: flex; align-items: center; }
-
-    textarea {
-      width: 100%;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: var(--text);
-      font-size: 0.96rem;
-      font-family: inherit;
-      resize: none;
-      max-height: 110px;
-      line-height: 1.35;
-    }
-
+    .input-wrap { flex: 1; background: var(--glass); border: 1px solid var(--border); border-radius: 22px; padding: 9px 12px; display: flex; align-items: center; }
+    textarea { width: 100%; border: none; outline: none; background: transparent; color: var(--text); font-size: 0.94rem; font-family: inherit; resize: none; max-height: 105px; line-height: 1.35; }
     textarea::placeholder { color: rgba(196, 181, 253, 0.52); }
 
     .send-btn {
-      width: 46px;
-      height: 46px;
-      border-radius: 50%;
-      border: none;
-      background: linear-gradient(135deg, var(--violet), var(--blue));
-      color: #fff;
-      font-size: 1.15rem;
-      flex-shrink: 0;
-      display: grid;
-      place-items: center;
-      cursor: pointer;
+      width: 42px; height: 42px; border-radius: 50%; border: none;
+      background: linear-gradient(135deg, var(--violet), var(--blue)); color: #fff;
+      font-size: 1.1rem; flex-shrink: 0; display: grid; place-items: center; cursor: pointer;
       box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
     }
 
-    .modal-bg { position: fixed; inset: 0; background: rgba(5, 2, 16, 0.78); backdrop-filter: blur(8px); display: none; align-items: flex-end; justify-content: center; z-index: 50; }
+    .modal-bg { position: fixed; inset: 0; background: rgba(5, 2, 16, 0.82); backdrop-filter: blur(8px); display: none; align-items: flex-end; justify-content: center; z-index: 50; }
     .modal-bg.open { display: flex; }
     .modal {
-      width: 100%;
-      max-width: 640px;
-      max-height: 85dvh;
-      overflow-y: auto;
-      background: #12092e;
-      border-top-left-radius: 24px;
-      border-top-right-radius: 24px;
-      border: 1px solid var(--border);
-      padding: 18px 16px calc(22px + env(safe-area-inset-bottom));
+      width: 100%; max-width: 640px; max-height: 88dvh; overflow-y: auto; background: #12092e;
+      border-top-left-radius: 24px; border-top-right-radius: 24px; border: 1px solid var(--border);
+      padding: 16px 16px calc(22px + env(safe-area-inset-bottom));
     }
-
-    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .modal-head h2 { font-size: 1.08rem; color: #e9d5ff; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .modal-head h2 { font-size: 1.05rem; color: #e9d5ff; }
     .close-btn { background: var(--glass); border: 1px solid var(--border); color: var(--text); border-radius: 10px; padding: 6px 12px; cursor: pointer; }
-    .field { margin-bottom: 14px; }
-    .field label { display: block; font-size: 0.82rem; color: var(--muted); margin-bottom: 6px; }
-    .field input, .field select {
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 5px; }
+    .field input[type="text"], .field input[type="password"], .field select {
       width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.06); color: var(--text); font-size: 0.92rem; outline: none;
+      background: rgba(255, 255, 255, 0.06); color: var(--text); font-size: 0.9rem; outline: none;
     }
+    .field input[type="range"] { width: 100%; accent-color: var(--blue); }
 
-    .btn-primary { width: 100%; padding: 12px; border: none; border-radius: 14px; background: linear-gradient(135deg, var(--violet), var(--blue)); color: #fff; font-weight: 600; font-size: 0.95rem; cursor: pointer; margin-top: 4px; }
+    .btn-primary { width: 100%; padding: 11px; border: none; border-radius: 13px; background: linear-gradient(135deg, var(--violet), var(--blue)); color: #fff; font-weight: 600; font-size: 0.92rem; cursor: pointer; margin-top: 6px; }
+    .btn-sec { width: 100%; padding: 10px; border-radius: 13px; border: 1px solid var(--blue); background: rgba(56, 189, 248, 0.14); color: #e0f2fe; font-weight: 600; font-size: 0.9rem; cursor: pointer; margin-top: 6px; }
     .btn-ghost { width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--border); background: transparent; color: var(--danger); margin-top: 8px; cursor: pointer; }
-    .info-card { background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 11px 12px; font-size: 0.81rem; line-height: 1.45; color: #dbeafe; margin-bottom: 14px; }
-    .mem-list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 14px; }
-    .mem-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 12px; background: var(--glass); border: 1px solid var(--border); font-size: 0.86rem; }
+    .info-card { background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 14px; padding: 10px 12px; font-size: 0.79rem; line-height: 1.45; color: #dbeafe; margin-bottom: 12px; }
+    .mem-list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 12px; }
+    .mem-item { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 9px 12px; border-radius: 12px; background: var(--glass); border: 1px solid var(--border); font-size: 0.85rem; }
     .mem-del { background: none; border: none; color: var(--danger); font-size: 1rem; cursor: pointer; }
+
+    .studio-preview {
+      width: 100%; max-height: 260px; border-radius: 14px; background: #000;
+      display: block; margin: 0 auto 12px; object-fit: contain;
+    }
+    .studio-status { font-size: 0.8rem; color: var(--cyan); text-align: center; margin: 6px 0; }
   </style>
 </head>
 <body>
@@ -295,17 +209,13 @@
           <svg class="avatar-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <linearGradient id="bgAv" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#1e1b4b"/>
-                <stop offset="100%" stop-color="#0c4a6e"/>
+                <stop offset="0%" stop-color="#1e1b4b"/><stop offset="100%" stop-color="#0c4a6e"/>
               </linearGradient>
               <linearGradient id="hairGrad" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#a78bfa"/>
-                <stop offset="55%" stop-color="#6366f1"/>
-                <stop offset="100%" stop-color="#22d3ee"/>
+                <stop offset="0%" stop-color="#a78bfa"/><stop offset="55%" stop-color="#6366f1"/><stop offset="100%" stop-color="#22d3ee"/>
               </linearGradient>
               <linearGradient id="skinGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#fde8e8"/>
-                <stop offset="100%" stop-color="#f3d0e0"/>
+                <stop offset="0%" stop-color="#fde8e8"/><stop offset="100%" stop-color="#f3d0e0"/>
               </linearGradient>
             </defs>
             <rect width="100" height="100" fill="url(#bgAv)"/>
@@ -330,54 +240,66 @@
           <h1>NÉBULA</h1>
           <div class="status-line">
             <span class="dot" id="statusDot"></span>
-            <span id="statusText">En línea · Lista para conversar</span>
+            <span id="statusText">En línea · Pantalla activa</span>
           </div>
         </div>
       </div>
 
       <div class="actions">
-        <button class="icon-btn" id="handsFreeBtn" title="Conversación continua (Manos libres)">🎧</button>
+        <button class="icon-btn active" id="wakeBtn" title="Mantener pantalla encendida">☀️</button>
+        <button class="icon-btn" id="handsFreeBtn" title="Manos libres (escucha continua)">🎧</button>
         <button class="icon-btn active" id="voiceToggleBtn" title="Activar o silenciar voz">🔊</button>
         <button class="icon-btn" id="memoryBtn" title="Memoria personal">🧠</button>
-        <button class="icon-btn" id="settingsBtn" title="Ajustes y conexión IA">⚙️</button>
+        <button class="icon-btn" id="settingsBtn" title="Ajustes">⚙️</button>
       </div>
     </header>
 
     <main class="chat-box" id="chatBox"></main>
 
     <div class="chips" id="chipsBar">
-      <button class="chip" data-text="Hola, ¿cómo estás hoy?">✨ Saludar</button>
+      <button class="chip" id="genImgChip">🎨 Crear imagen</button>
+      <button class="chip" data-text="¿Qué ves en esta imagen o video?" id="visionChip">👁️ Analizar foto/video</button>
       <button class="chip" data-text="Cuéntame algo curioso o divertido">🎭 Sorpréndeme</button>
       <button class="chip" data-text="¿Qué hora y fecha es hoy?">🕒 Hora y fecha</button>
-      <button class="chip" data-text="Recuerda que me gusta la música y el café">🧠 Guardar recuerdo</button>
+    </div>
+
+    <!-- BARRA DE ARCHIVO ADJUNTO -->
+    <div class="attach-bar" id="attachBar">
+      <div class="attach-left">
+        <div id="attachThumbBox"></div>
+        <div class="attach-name" id="attachName">Archivo listo</div>
+      </div>
+      <div class="attach-btns">
+        <button class="mini-pill" id="attachStudioBtn">✨ Mejorar</button>
+        <button class="mini-pill" id="attachRemoveBtn">✕</button>
+      </div>
     </div>
 
     <footer class="composer">
-      <button class="mic-btn" id="micBtn" title="Hablar por micrófono">🎙️</button>
+      <input type="file" id="mediaInput" accept="image/*,video/*" hidden />
+      <button class="round-btn" id="mediaBtn" title="Enviar o mejorar foto/video">📷</button>
+      <button class="round-btn" id="micBtn" title="Hablar por micrófono">🎙️</button>
       <div class="input-wrap">
-        <textarea id="msgInput" rows="1" placeholder="Escríbele o háblale a Nébula..."></textarea>
+        <textarea id="msgInput" rows="1" placeholder="Escribe, envía foto/video o pide una imagen..."></textarea>
       </div>
-      <button class="send-btn" id="sendBtn" title="Enviar mensaje">➤</button>
+      <button class="send-btn" id="sendBtn" title="Enviar">➤</button>
     </footer>
   </div>
 
-  <!-- MODAL DE MEMORIA PERSONAL -->
+  <!-- MODAL MEMORIA -->
   <div class="modal-bg" id="memoryModal">
     <div class="modal">
       <div class="modal-head">
         <h2>🧠 Memoria Personal de Nébula</h2>
         <button class="close-btn" data-close="memoryModal">Cerrar</button>
       </div>
-      <div class="info-card">
-        Lo que guardes aquí se conserva en tu teléfono para que Nébula te conozca cada vez mejor sin repetirlo.
-      </div>
       <div class="field">
         <label>Tu nombre o cómo quieres que te llame:</label>
-        <input type="text" id="userNameInput" placeholder="Ejemplo: Sofía, Alex, Mi cielo..." />
+        <input type="text" id="userNameInput" placeholder="Ejemplo: Sofía, Alex..." />
       </div>
       <div class="field">
         <label>Añadir un recuerdo nuevo:</label>
-        <input type="text" id="newFactInput" placeholder="Ejemplo: Me encanta el color azul y el café" />
+        <input type="text" id="newFactInput" placeholder="Ejemplo: Me gusta la música y el café" />
       </div>
       <button class="btn-primary" id="saveMemoryBtn">Guardar en la memoria</button>
       <div class="mem-list" id="memList"></div>
@@ -385,7 +307,41 @@
     </div>
   </div>
 
-  <!-- MODAL DE AJUSTES -->
+  <!-- MODAL ESTUDIO DE MEJORA (FOTOS Y VIDEOS) -->
+  <div class="modal-bg" id="studioModal">
+    <div class="modal">
+      <div class="modal-head">
+        <h2>✨ Estudio de Mejora Nébula</h2>
+        <button class="close-btn" data-close="studioModal">Cerrar</button>
+      </div>
+      <canvas id="studioCanvas" class="studio-preview"></canvas>
+      <video id="studioVideoHidden" playsinline muted style="display:none"></video>
+      <div class="studio-status" id="studioStatus">Ajusta o toca Auto-Mejora en 1 toque</div>
+
+      <div class="field">
+        <label>Brillo: <span id="valBright">100</span>%</label>
+        <input type="range" id="rngBright" min="60" max="150" value="100" />
+      </div>
+      <div class="field">
+        <label>Contraste: <span id="valContrast">100</span>%</label>
+        <input type="range" id="rngContrast" min="70" max="160" value="100" />
+      </div>
+      <div class="field">
+        <label>Color / Saturación: <span id="valSat">100</span>%</label>
+        <input type="range" id="rngSat" min="50" max="180" value="100" />
+      </div>
+      <div class="field" id="sharpField">
+        <label>Nitidez / Definición (fotos): <span id="valSharp">0</span>%</label>
+        <input type="range" id="rngSharp" min="0" max="100" value="0" />
+      </div>
+
+      <button class="btn-sec" id="autoEnhanceBtn">🪄 Auto-Mejora Inteligente</button>
+      <button class="btn-primary" id="downloadStudioBtn">⬇️ Guardar resultado en mi teléfono</button>
+      <button class="btn-sec" id="sendStudioBtn">💬 Enviar foto mejorada a Nébula</button>
+    </div>
+  </div>
+
+  <!-- MODAL AJUSTES -->
   <div class="modal-bg" id="settingsModal">
     <div class="modal">
       <div class="modal-head">
@@ -393,14 +349,15 @@
         <button class="close-btn" data-close="settingsModal">Cerrar</button>
       </div>
       <div class="info-card">
-        <strong>Modo Manos Libres 🎧:</strong> Toca el botón 🎧 arriba (o el micrófono 🎙️) una vez para iniciar. Nébula te responderá y volverá a escucharte sola en automático. Di <em>"silencio"</em> o <em>"para"</em> para pausarla.
+        <strong>Visión virtual y chat:</strong> Usa tu clave gratuita de Google Gemini para ver fotos y videos.<br>
+        <strong>Creación de imágenes:</strong> Usa AI Horde gratis por defecto (sin registro, tarda ~35 seg). Si quieres más velocidad, puedes pegar opcionalmente una clave gratuita de <em>enter.pollinations.ai</em>.
       </div>
       <div class="field">
         <label>Voz femenina en español:</label>
         <select id="voiceSelect"></select>
       </div>
       <div class="field">
-        <label>Clave gratuita de Google Gemini:</label>
+        <label>Clave gratuita de Google Gemini (Chat y Visión):</label>
         <input type="password" id="apiKeyInput" placeholder="Pega aquí tu API Key de AI Studio" />
       </div>
       <div class="field">
@@ -410,12 +367,16 @@
           <option value="gemini-3.6-flash">Gemini 3.6 Flash (Avanzado gratuito)</option>
         </select>
       </div>
+      <div class="field">
+        <label>Clave opcional de Pollinations (enter.pollinations.ai):</label>
+        <input type="password" id="polliKeyInput" placeholder="Opcional (si la dejas vacía usa AI Horde gratis)" />
+      </div>
       <button class="btn-primary" id="saveSettingsBtn">Guardar ajustes</button>
     </div>
   </div>
 
   <script>
-    /* 1. MEMORIA PERSONAL */
+    /* 1. MEMORIA Y AJUSTES */
     const STORAGE_KEY = "nebula_assistant_v1";
 
     const NebulaMemory = {
@@ -426,55 +387,46 @@
         ajustes: {
           vozActiva: true,
           manosLibres: false,
+          pantallaActiva: true,
           nombreVoz: "",
           apiKey: "",
+          polliKey: "",
           modelo: "gemini-3.5-flash-lite"
         }
       },
-
       cargar() {
         try {
           const raw = localStorage.getItem(STORAGE_KEY);
           if (raw) {
-            const parsed = JSON.parse(raw);
+            const p = JSON.parse(raw);
             this.data = {
-              ...this.data,
-              ...parsed,
-              perfil: { ...this.data.perfil, ...(parsed.perfil || {}) },
-              ajustes: { ...this.data.ajustes, ...(parsed.ajustes || {}) },
-              hechos: Array.isArray(parsed.hechos) ? parsed.hechos : [],
-              conversacion: Array.isArray(parsed.conversacion) ? parsed.conversacion : []
+              ...this.data, ...p,
+              perfil: { ...this.data.perfil, ...(p.perfil || {}) },
+              ajustes: { ...this.data.ajustes, ...(p.ajustes || {}) },
+              hechos: Array.isArray(p.hechos) ? p.hechos : [],
+              conversacion: Array.isArray(p.conversacion) ? p.conversacion : []
             };
-            if (this.data.ajustes.modelo === "gemini-2.5-flash") {
-              this.data.ajustes.modelo = "gemini-3.5-flash-lite";
-            }
+            if (this.data.ajustes.modelo === "gemini-2.5-flash") this.data.ajustes.modelo = "gemini-3.5-flash-lite";
           }
         } catch (e) {}
       },
-
       guardar() {
         try {
-          if (this.data.conversacion.length > 30) {
-            this.data.conversacion = this.data.conversacion.slice(-30);
-          }
+          if (this.data.conversacion.length > 30) this.data.conversacion = this.data.conversacion.slice(-30);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(this.data));
         } catch (e) {}
       },
-
       agregarHecho(texto) {
         const limpio = texto.trim();
-        if (!limpio) return false;
-        if (this.data.hechos.some(h => h.texto.toLowerCase() === limpio.toLowerCase())) return false;
+        if (!limpio || this.data.hechos.some(h => h.texto.toLowerCase() === limpio.toLowerCase())) return false;
         this.data.hechos.unshift({ id: Date.now(), texto: limpio, fecha: new Date().toLocaleDateString("es-CO") });
         this.guardar();
         return true;
       },
-
       eliminarHecho(id) {
         this.data.hechos = this.data.hechos.filter(h => h.id !== id);
         this.guardar();
       },
-
       resumenParaIA() {
         const partes = [];
         if (this.data.perfil.nombreUsuario) partes.push(`El usuario se llama ${this.data.perfil.nombreUsuario}.`);
@@ -483,62 +435,69 @@
       }
     };
 
-    /* 2. VOZ Y MODO MANOS LIBRES */
+    /* 2. PANTALLA SIEMPRE ENCENDIDA (WAKE LOCK) */
+    let wakeLockObj = null;
+
+    async function solicitarWakeLock() {
+      if (!NebulaMemory.data.ajustes.pantallaActiva || !("wakeLock" in navigator)) return;
+      try {
+        wakeLockObj = await navigator.wakeLock.request("screen");
+        wakeLockObj.addEventListener("release", () => { wakeLockObj = null; });
+      } catch (e) {}
+    }
+
+    function liberarWakeLock() {
+      if (wakeLockObj) {
+        try { wakeLockObj.release(); } catch (e) {}
+        wakeLockObj = null;
+      }
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && NebulaMemory.data.ajustes.pantallaActiva) {
+        solicitarWakeLock();
+      }
+    });
+
+    /* 3. VOZ Y MODO MANOS LIBRES */
     const NebulaVoice = {
-      vocesEs: [],
-      recognition: null,
-      escuchando: false,
-      silenciosSeguidos: 0,
-      procesando: false,
-      timerReinicio: null,
+      vocesEs: [], recognition: null, escuchando: false, silenciosSeguidos: 0, procesando: false, timerReinicio: null,
 
       iniciar() {
         this.cargarVoces();
-        if ("speechSynthesis" in window) {
-          window.speechSynthesis.onvoiceschanged = () => this.cargarVoces();
-        }
+        if ("speechSynthesis" in window) window.speechSynthesis.onvoiceschanged = () => this.cargarVoces();
         this.prepararMicrofono();
       },
 
       cargarVoces() {
         if (!("speechSynthesis" in window)) return;
-        const todas = window.speechSynthesis.getVoices() || [];
-        this.vocesEs = todas.filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
-
+        this.vocesEs = (window.speechSynthesis.getVoices() || []).filter(v => v.lang && v.lang.toLowerCase().startsWith("es"));
         const select = document.getElementById("voiceSelect");
         if (!select) return;
         select.innerHTML = "";
-
-        if (this.vocesEs.length === 0) {
-          const opt = document.createElement("option");
-          opt.value = "";
-          opt.textContent = "Voz predeterminada en español del teléfono";
-          select.appendChild(opt);
+        if (!this.vocesEs.length) {
+          select.innerHTML = `<option value="">Voz predeterminada en español</option>`;
           return;
         }
-
-        const pistasFemeninas = ["sabina", "helena", "laura", "lucia", "camila", "sofia", "paulina", "monica", "paloma", "elena", "female", "mujer", "es-us", "es-co", "es-mx", "es-es"];
+        const pistas = ["sabina", "helena", "laura", "lucia", "camila", "sofia", "paulina", "monica", "paloma", "elena", "female", "mujer", "es-us", "es-co", "es-mx", "es-es"];
         this.vocesEs.sort((a, b) => {
-          const aS = pistasFemeninas.findIndex(p => a.name.toLowerCase().includes(p));
-          const bS = pistasFemeninas.findIndex(p => b.name.toLowerCase().includes(p));
+          const aS = pistas.findIndex(p => a.name.toLowerCase().includes(p));
+          const bS = pistas.findIndex(p => b.name.toLowerCase().includes(p));
           return (aS === -1 ? 99 : aS) - (bS === -1 ? 99 : bS);
         });
-
         this.vocesEs.forEach(v => {
           const opt = document.createElement("option");
-          opt.value = v.name;
-          opt.textContent = `${v.name} (${v.lang})`;
+          opt.value = v.name; opt.textContent = `${v.name} (${v.lang})`;
           select.appendChild(opt);
         });
-
-        const guardada = NebulaMemory.data.ajustes.nombreVoz;
-        if (guardada && this.vocesEs.some(v => v.name === guardada)) select.value = guardada;
+        const g = NebulaMemory.data.ajustes.nombreVoz;
+        if (g && this.vocesEs.some(v => v.name === g)) select.value = g;
         else if (this.vocesEs[0]) select.value = this.vocesEs[0].name;
       },
 
       obtenerVozElegida() {
-        const nombre = NebulaMemory.data.ajustes.nombreVoz;
-        return (nombre && this.vocesEs.find(v => v.name === nombre)) || this.vocesEs[0] || null;
+        const n = NebulaMemory.data.ajustes.nombreVoz;
+        return (n && this.vocesEs.find(v => v.name === n)) || this.vocesEs[0] || null;
       },
 
       hablar(texto, alTerminar) {
@@ -548,42 +507,30 @@
         }
         window.speechSynthesis.cancel();
         clearTimeout(this.timerReinicio);
-
         const limpio = texto.replace(/[*_`#]/g, "").replace(/[\u{1F300}-\u{1FAFF}]/gu, "").trim();
-        if (!limpio) {
-          if (alTerminar) alTerminar();
-          return;
-        }
+        if (!limpio) { if (alTerminar) alTerminar(); return; }
 
         const frases = limpio.match(/[^.!?]+[.!?]*/g) || [limpio];
         const voz = this.obtenerVozElegida();
         let terminado = false;
-
         const finalizar = () => {
           if (terminado) return;
           terminado = true;
           clearTimeout(this.timerReinicio);
-          setEstadoAvatar("idle", NebulaMemory.data.ajustes.manosLibres ? "Manos libres activo" : "En línea · Lista para conversar");
+          setEstadoAvatar("idle", estadoBaseTexto());
           if (alTerminar) alTerminar();
         };
 
         setEstadoAvatar("speaking", "Hablando contigo...");
-
-        // Respaldo por si Android no dispara onend
-        const duracionMaxMs = Math.max(4000, limpio.length * 85 + 2000);
-        this.timerReinicio = setTimeout(finalizar, duracionMaxMs);
+        this.timerReinicio = setTimeout(finalizar, Math.max(4000, limpio.length * 85 + 2000));
 
         frases.forEach((frase, idx) => {
-          const utter = new SpeechSynthesisUtterance(frase.trim());
-          utter.lang = voz ? voz.lang : "es-ES";
-          if (voz) utter.voice = voz;
-          utter.pitch = 1.08;
-          utter.rate = 1.02;
-          if (idx === frases.length - 1) {
-            utter.onend = finalizar;
-            utter.onerror = finalizar;
-          }
-          window.speechSynthesis.speak(utter);
+          const u = new SpeechSynthesisUtterance(frase.trim());
+          u.lang = voz ? voz.lang : "es-ES";
+          if (voz) u.voice = voz;
+          u.pitch = 1.08; u.rate = 1.02;
+          if (idx === frases.length - 1) { u.onend = finalizar; u.onerror = finalizar; }
+          window.speechSynthesis.speak(u);
         });
       },
 
@@ -591,186 +538,452 @@
         const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
         if (!SR) return;
         const rec = new SR();
-        rec.lang = "es-CO";
-        rec.interimResults = false;
-        rec.continuous = false;
+        rec.lang = "es-CO"; rec.interimResults = false; rec.continuous = false;
 
         rec.onstart = () => {
           this.escuchando = true;
           document.getElementById("micBtn").classList.add("recording");
           setEstadoAvatar("listening", "Te escucho... habla ahora");
         };
-
         rec.onresult = (ev) => {
           this.silenciosSeguidos = 0;
           const texto = ev.results[0][0].transcript;
           if (texto && texto.trim()) {
-            const limpio = texto.trim().toLowerCase();
-            if (/^(para|detente|silencio|callate|cállate|basta|adiós|adios|chao)$/.test(limpio)) {
-              desactivarManosLibres("Manos libres pausado · Toca 🎙️ cuando quieras");
-              agregarBurbuja("nebula", "Listo, me quedo en silencio 💜. Toca el micrófono cuando quieras volver a hablar.");
+            if (/^(para|detente|silencio|callate|cállate|basta|adiós|adios|chao)$/i.test(texto.trim())) {
+              desactivarManosLibres("Manos libres pausado");
+              agregarBurbuja("nebula", "Listo, me quedo en silencio 💜. Toca el micrófono cuando quieras seguir.");
               return;
             }
             this.procesando = true;
             enviarMensaje(texto.trim());
           }
         };
-
         rec.onerror = (ev) => {
           this.escuchando = false;
           document.getElementById("micBtn").classList.remove("recording");
-
           if (ev.error === "not-allowed" || ev.error === "service-not-allowed") {
             desactivarManosLibres("Permiso de micrófono necesario");
-            agregarBurbuja("nebula", "Necesito permiso de micrófono en Chrome para poder escucharte 💜.");
+            agregarBurbuja("nebula", "Necesito permiso de micrófono en Chrome para escucharte 💜.");
             return;
           }
-
           if (NebulaMemory.data.ajustes.manosLibres && !this.procesando && (ev.error === "no-speech" || ev.error === "aborted")) {
             this.silenciosSeguidos++;
-            if (this.silenciosSeguidos >= 5) {
-              desactivarManosLibres("En pausa por silencio · Toca 🎙️ para seguir");
-            }
+            if (this.silenciosSeguidos >= 5) desactivarManosLibres("En pausa por silencio");
           }
         };
-
         rec.onend = () => {
           this.escuchando = false;
           document.getElementById("micBtn").classList.remove("recording");
           if (NebulaMemory.data.ajustes.manosLibres && !this.procesando && this.silenciosSeguidos < 5) {
-            setTimeout(() => {
-              if (NebulaMemory.data.ajustes.manosLibres && !this.procesando && !this.escuchando) {
-                this.iniciarEscucha();
-              }
-            }, 500);
-          } else if (!this.procesando) {
-            setEstadoAvatar("idle", NebulaMemory.data.ajustes.manosLibres ? "Manos libres activo" : "En línea · Lista para conversar");
-          }
+            setTimeout(() => { if (NebulaMemory.data.ajustes.manosLibres && !this.procesando && !this.escuchando) this.iniciarEscucha(); }, 500);
+          } else if (!this.procesando) setEstadoAvatar("idle", estadoBaseTexto());
         };
-
         this.recognition = rec;
       },
 
       iniciarEscucha() {
-        if (!this.recognition) {
-          agregarBurbuja("nebula", "Tu navegador actual no soporta reconocimiento de voz. Ábreme en Google Chrome 💙.");
-          return;
-        }
-        if (this.escuchando) return;
+        if (!this.recognition || this.escuchando) return;
         if ("speechSynthesis" in window) window.speechSynthesis.cancel();
-        try {
-          this.recognition.start();
-        } catch (e) {}
+        try { this.recognition.start(); } catch (e) {}
       },
-
       detenerEscucha() {
         this.escuchando = false;
         document.getElementById("micBtn").classList.remove("recording");
-        if (this.recognition) {
-          try { this.recognition.stop(); } catch (e) {}
-        }
+        if (this.recognition) try { this.recognition.stop(); } catch (e) {}
       },
-
       alternarMicrofono() {
-        if (this.escuchando) {
-          desactivarManosLibres("En línea · Lista para conversar");
-        } else {
-          this.silenciosSeguidos = 0;
-          this.iniciarEscucha();
-        }
+        if (this.escuchando) desactivarManosLibres(estadoBaseTexto());
+        else { this.silenciosSeguidos = 0; this.iniciarEscucha(); }
       }
     };
 
-    function desactivarManosLibres(mensajeEstado) {
+    function estadoBaseTexto() {
+      const m = NebulaMemory.data.ajustes.manosLibres ? "Manos libres" : "En línea";
+      const p = NebulaMemory.data.ajustes.pantallaActiva ? "Pantalla activa" : "Normal";
+      return `${m} · ${p}`;
+    }
+
+    function desactivarManosLibres(msg) {
       NebulaMemory.data.ajustes.manosLibres = false;
       NebulaMemory.guardar();
       document.getElementById("handsFreeBtn").classList.remove("active");
       NebulaVoice.detenerEscucha();
-      setEstadoAvatar("idle", mensajeEstado || "En línea · Lista para conversar");
+      setEstadoAvatar("idle", msg || estadoBaseTexto());
     }
 
-    function actualizarBotonManosLibres() {
-      document.getElementById("handsFreeBtn").classList.toggle("active", !!NebulaMemory.data.ajustes.manosLibres);
+    /* 4. ADJUNTOS MULTIMODALES (FOTOS Y VIDEOS) */
+    let adjuntoActual = null; // { tipo: 'image'|'video', mimeType, base64, previewUrl, nombre }
+
+    document.getElementById("mediaBtn").onclick = () => document.getElementById("mediaInput").click();
+
+    document.getElementById("mediaInput").onchange = async (e) => {
+      const file = e.target.files[0];
+      e.target.value = "";
+      if (!file) return;
+
+      if (file.type.startsWith("image/")) {
+        const procesada = await comprimirImagen(file, 1400, 0.88);
+        adjuntoActual = {
+          tipo: "image",
+          mimeType: "image/jpeg",
+          base64: procesada.split(",")[1],
+          previewUrl: procesada,
+          nombre: file.name || "Foto"
+        };
+        mostrarBarraAdjunto();
+      } else if (file.type.startsWith("video/")) {
+        if (file.size > 20 * 1024 * 1024) {
+          agregarBurbuja("nebula", "Ese video pesa más de 20 MB 😅. Para que pueda verlo directo desde el celular, envíame uno de hasta 20 MB (cortito o grabado en calidad estándar) 💜.");
+          return;
+        }
+        const dataUrl = await leerArchivoBase64(file);
+        adjuntoActual = {
+          tipo: "video",
+          mimeType: file.type || "video/mp4",
+          base64: dataUrl.split(",")[1],
+          previewUrl: URL.createObjectURL(file),
+          nombre: file.name || "Video"
+        };
+        mostrarBarraAdjunto();
+      }
+    };
+
+    function leerArchivoBase64(file) {
+      return new Promise((res, rej) => {
+        const r = new FileReader();
+        r.onload = () => res(r.result);
+        r.onerror = rej;
+        r.readAsDataURL(file);
+      });
     }
 
-    /* 3. CEREBRO DE NÉBULA */
-    let ultimoTema = "";
-
-    function extraerMemoriaAutomatica(texto) {
-      const mNombre = texto.match(/(?:me llamo|mi nombre es|llámame|llamame)\s+([A-ZÁÉÍÓÚÑa-záéíóúñ]{2,20})/i);
-      if (mNombre) {
-        const nombre = mNombre[1].charAt(0).toUpperCase() + mNombre[1].slice(1);
-        NebulaMemory.data.perfil.nombreUsuario = nombre;
-        NebulaMemory.guardar();
-        return `¡Qué lindo nombre! Listo, ${nombre}, desde ahora te recordaré así 💜.`;
-      }
-      const mRecuerda = texto.match(/(?:recuerda que|no olvides que|anota que)\s+(.+)/i);
-      if (mRecuerda && mRecuerda[1]) {
-        NebulaMemory.agregarHecho(mRecuerda[1]);
-        return `Anotado en mi memoria personal: "${mRecuerda[1].trim()}". No se me va a olvidar ✨.`;
-      }
-      return null;
+    function comprimirImagen(file, maxDim, calidad) {
+      return new Promise((resolve) => {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = () => {
+          let w = img.width, h = img.height;
+          if (w > maxDim || h > maxDim) {
+            if (w > h) { h = Math.round(h * (maxDim / w)); w = maxDim; }
+            else { w = Math.round(w * (maxDim / h)); h = maxDim; }
+          }
+          const c = document.createElement("canvas");
+          c.width = w; c.height = h;
+          c.getContext("2d").drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          resolve(c.toDataURL("image/jpeg", calidad));
+        };
+        img.src = url;
+      });
     }
 
-    function respuestaLocalContextual(texto) {
-      const t = texto.toLowerCase().trim();
-      const nombre = NebulaMemory.data.perfil.nombreUsuario;
-      const saludoNombre = nombre ? ` ${nombre}` : "";
-
-      const notaAuto = extraerMemoriaAutomatica(texto);
-      if (notaAuto) return notaAuto;
-
-      if (/\b(hola|buenos días|buenos dias|buenas tardes|buenas noches|ey|qué tal|que tal)\b/.test(t)) {
-        ultimoTema = "saludo";
-        return `¡Hola${saludoNombre}! Qué alegría sentirte por aquí ✨. ¿Cómo va tu día?`;
+    function mostrarBarraAdjunto() {
+      const bar = document.getElementById("attachBar");
+      const box = document.getElementById("attachThumbBox");
+      box.innerHTML = "";
+      if (!adjuntoActual) { bar.classList.remove("show"); return; }
+      if (adjuntoActual.tipo === "image") {
+        box.innerHTML = `<img class="attach-thumb" src="${adjuntoActual.previewUrl}" />`;
+      } else {
+        box.innerHTML = `<video class="attach-thumb" src="${adjuntoActual.previewUrl}" muted></video>`;
       }
-      if (/(hora|fecha|qué día|que dia)/.test(t)) {
-        const ahora = new Date();
-        return `Son las ${ahora.toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" })} y hoy es ${ahora.toLocaleDateString("es-CO", { weekday: "long", day: "numeric", month: "long" })}${saludoNombre} 🕒.`;
-      }
-      return `Te escucho con atención${saludoNombre} 💜. Cuéntame más sobre eso.`;
+      document.getElementById("attachName").textContent = adjuntoActual.nombre;
+      bar.classList.add("show");
     }
 
-    async function consultarGemini(mensajeUsuario) {
+    document.getElementById("attachRemoveBtn").onclick = () => { adjuntoActual = null; mostrarBarraAdjunto(); };
+    document.getElementById("attachStudioBtn").onclick = () => { if (adjuntoActual) abrirEstudio(adjuntoActual.tipo, adjuntoActual.previewUrl); };
+
+    /* 5. ESTUDIO DE MEJORA LOCAL (FOTOS Y VIDEOS) */
+    const studioCanvas = document.getElementById("studioCanvas");
+    const studioCtx = studioCanvas.getContext("2d", { willReadFrequently: true });
+    const studioVideo = document.getElementById("studioVideoHidden");
+    let studioTipo = "image";
+    let studioImgObj = null;
+    let studioAnimId = null;
+
+    function abrirEstudio(tipo, url) {
+      studioTipo = tipo;
+      cancelAnimationFrame(studioAnimId);
+      studioVideo.pause();
+      document.getElementById("rngBright").value = 100;
+      document.getElementById("rngContrast").value = 100;
+      document.getElementById("rngSat").value = 100;
+      document.getElementById("rngSharp").value = 0;
+      actualizarEtiquetasEstudio();
+
+      document.getElementById("sharpField").style.display = tipo === "image" ? "block" : "none";
+      document.getElementById("sendStudioBtn").style.display = tipo === "image" ? "block" : "none";
+      document.getElementById("downloadStudioBtn").textContent = tipo === "image"
+        ? "⬇️ Guardar foto mejorada en mi teléfono"
+        : "⏺️ Procesar y guardar video mejorado";
+
+      if (tipo === "image") {
+        studioImgObj = new Image();
+        studioImgObj.crossOrigin = "anonymous";
+        studioImgObj.onload = () => {
+          studioCanvas.width = studioImgObj.width;
+          studioCanvas.height = studioImgObj.height;
+          renderizarFotoEstudio();
+        };
+        studioImgObj.src = url;
+        document.getElementById("studioStatus").textContent = "Toca Auto-Mejora o ajusta los controles";
+      } else {
+        studioVideo.src = url;
+        studioVideo.loop = true;
+        studioVideo.onloadeddata = () => {
+          const escala = Math.min(1, 720 / Math.max(studioVideo.videoWidth, studioVideo.videoHeight));
+          studioCanvas.width = Math.round(studioVideo.videoWidth * escala);
+          studioCanvas.height = Math.round(studioVideo.videoHeight * escala);
+          studioVideo.play();
+          renderizarVideoEstudio();
+        };
+        document.getElementById("studioStatus").textContent = "Vista previa en vivo del video";
+      }
+      document.getElementById("studioModal").classList.add("open");
+    }
+
+    function filtroCSSActual() {
+      const b = document.getElementById("rngBright").value;
+      const c = document.getElementById("rngContrast").value;
+      const s = document.getElementById("rngSat").value;
+      return `brightness(${b}%) contrast(${c}%) saturate(${s}%)`;
+    }
+
+    function actualizarEtiquetasEstudio() {
+      document.getElementById("valBright").textContent = document.getElementById("rngBright").value;
+      document.getElementById("valContrast").textContent = document.getElementById("rngContrast").value;
+      document.getElementById("valSat").textContent = document.getElementById("rngSat").value;
+      document.getElementById("valSharp").textContent = document.getElementById("rngSharp").value;
+    }
+
+    function renderizarFotoEstudio() {
+      if (!studioImgObj) return;
+      studioCtx.filter = filtroCSSActual();
+      studioCtx.drawImage(studioImgObj, 0, 0, studioCanvas.width, studioCanvas.height);
+      studioCtx.filter = "none";
+
+      const sharp = Number(document.getElementById("rngSharp").value) / 100;
+      if (sharp > 0.02) aplicarNitidez(studioCtx, studioCanvas.width, studioCanvas.height, sharp * 0.65);
+    }
+
+    function aplicarNitidez(ctx, w, h, amt) {
+      const imgData = ctx.getImageData(0, 0, w, h);
+      const src = new Uint8ClampedArray(imgData.data);
+      const dst = imgData.data;
+      for (let y = 1; y < h - 1; y++) {
+        for (let x = 1; x < w - 1; x++) {
+          const i = (y * w + x) * 4;
+          for (let c = 0; c < 3; c++) {
+            const center = src[i + c];
+            const blur = (src[i - 4 + c] + src[i + 4 + c] + src[i - w * 4 + c] + src[i + w * 4 + c]) * 0.25;
+            dst[i + c] = center + (center - blur) * amt * 2.2;
+          }
+        }
+      }
+      ctx.putImageData(imgData, 0, 0);
+    }
+
+    function renderizarVideoEstudio() {
+      if (studioTipo !== "video" || !document.getElementById("studioModal").classList.contains("open")) return;
+      studioCtx.filter = filtroCSSActual();
+      studioCtx.drawImage(studioVideo, 0, 0, studioCanvas.width, studioCanvas.height);
+      studioCtx.filter = "none";
+      studioAnimId = requestAnimationFrame(renderizarVideoEstudio);
+    }
+
+    ["rngBright", "rngContrast", "rngSat", "rngSharp"].forEach(id => {
+      document.getElementById(id).oninput = () => {
+        actualizarEtiquetasEstudio();
+        if (studioTipo === "image") renderizarFotoEstudio();
+      };
+    });
+
+    document.getElementById("autoEnhanceBtn").onclick = () => {
+      document.getElementById("rngBright").value = 107;
+      document.getElementById("rngContrast").value = 118;
+      document.getElementById("rngSat").value = 120;
+      document.getElementById("rngSharp").value = studioTipo === "image" ? 45 : 0;
+      actualizarEtiquetasEstudio();
+      if (studioTipo === "image") renderizarFotoEstudio();
+      document.getElementById("studioStatus").textContent = "✨ Auto-Mejora aplicada";
+    };
+
+    document.getElementById("downloadStudioBtn").onclick = () => {
+      if (studioTipo === "image") {
+        const a = document.createElement("a");
+        a.download = `nebula-mejorada-${Date.now()}.jpg`;
+        a.href = studioCanvas.toDataURL("image/jpeg", 0.94);
+        a.click();
+        document.getElementById("studioStatus").textContent = "✅ Foto descargada";
+      } else {
+        exportarVideoMejorado();
+      }
+    };
+
+    function exportarVideoMejorado() {
+      if (!studioCanvas.captureStream || typeof MediaRecorder === "undefined") {
+        document.getElementById("studioStatus").textContent = "⚠️ Tu navegador no soporta exportar video desde canvas.";
+        return;
+      }
+      const status = document.getElementById("studioStatus");
+      studioVideo.loop = false;
+      studioVideo.currentTime = 0;
+      const stream = studioCanvas.captureStream(30);
+      const chunks = [];
+      const rec = new MediaRecorder(stream, { mimeType: MediaRecorder.isTypeSupported("video/webm;codecs=vp8") ? "video/webm;codecs=vp8" : "video/webm" });
+      rec.ondataavailable = (e) => { if (e.data.size > 0) chunks.push(e.data); };
+      rec.onstop = () => {
+        const blob = new Blob(chunks, { type: "video/webm" });
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = `nebula-video-mejorado-${Date.now()}.webm`;
+        a.click();
+        studioVideo.loop = true;
+        studioVideo.play();
+        status.textContent = "✅ Video mejorado guardado";
+      };
+      status.textContent = "⏳ Procesando video mejorado (espera a que termine)...";
+      rec.start();
+      studioVideo.play();
+      studioVideo.onended = () => {
+        if (rec.state === "recording") rec.stop();
+        studioVideo.onended = null;
+      };
+    }
+
+    document.getElementById("sendStudioBtn").onclick = () => {
+      if (studioTipo !== "image") return;
+      const dataUrl = studioCanvas.toDataURL("image/jpeg", 0.9);
+      adjuntoActual = { tipo: "image", mimeType: "image/jpeg", base64: dataUrl.split(",")[1], previewUrl: dataUrl, nombre: "Foto mejorada" };
+      mostrarBarraAdjunto();
+      document.getElementById("studioModal").classList.remove("open");
+    };
+
+    /* 6. CREACIÓN DE IMÁGENES GRATIS (AI HORDE / POLLINATIONS OPCIONAL) */
+    async function traducirPromptParaImagen(descripcionEs) {
+      if (!NebulaMemory.data.ajustes.apiKey.trim()) return descripcionEs;
+      try {
+        const res = await llamarTextoGemini(
+          `Traduce al inglés y convierte en un prompt descriptivo corto y artístico para generar una imagen (responde SOLO con el prompt en inglés, sin comillas): "${descripcionEs}"`
+        );
+        return res || descripcionEs;
+      } catch (e) {
+        return descripcionEs;
+      }
+    }
+
+    async function generarImagenGratis(descripcionEs) {
+      const promptEn = await traducirPromptParaImagen(descripcionEs);
+      const polliKey = NebulaMemory.data.ajustes.polliKey.trim();
+
+      if (polliKey) {
+        const url = `https://gen.pollinations.ai/image/${encodeURIComponent(promptEn)}?model=flux&width=768&height=768&key=${encodeURIComponent(polliKey)}`;
+        return url;
+      }
+
+      // AI Horde: 100% gratuito sin tarjeta ni cuenta
+      const submit = await fetch("https://aihorde.net/api/v2/generate/async", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "0000000000",
+          "Client-Agent": "NebulaAssistant:1.0:github"
+        },
+        body: JSON.stringify({
+          prompt: promptEn,
+          params: { width: 512, height: 512, steps: 20, n: 1 },
+          r2: true
+        })
+      });
+      if (!submit.ok) throw new Error("No se pudo iniciar la creación de imagen");
+      const job = await submit.json();
+      if (!job.id) throw new Error("Sin ID de generación");
+
+      for (let i = 0; i < 30; i++) {
+        await new Promise(r => setTimeout(r, 3000));
+        const chk = await fetch(`https://aihorde.net/api/v2/generate/check/${job.id}`);
+        const cData = await chk.json();
+        if (cData.wait_time !== undefined) {
+          setEstadoAvatar("thinking", `Creando imagen... (~${Math.max(5, cData.wait_time)}s)`);
+        }
+        if (cData.done) break;
+      }
+
+      const st = await fetch(`https://aihorde.net/api/v2/generate/status/${job.id}`);
+      const sData = await st.json();
+      const img = sData?.generations?.[0]?.img;
+      if (!img) throw new Error("La red gratuita tardó demasiado; intenta de nuevo");
+      return img.startsWith("http") ? img : `data:image/webp;base64,${img}`;
+    }
+
+    /* 7. CEREBRO GEMINI (TEXTO + VISIÓN DE FOTOS Y VIDEOS) */
+    async function llamarTextoGemini(promptUnico) {
+      const apiKey = NebulaMemory.data.ajustes.apiKey.trim();
+      const modelo = NebulaMemory.data.ajustes.modelo || "gemini-3.5-flash-lite";
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptUnico }] }] })
+      });
+      const data = await res.json();
+      return data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
+    }
+
+    async function consultarGemini(mensajeUsuario, adjunto) {
       const apiKey = NebulaMemory.data.ajustes.apiKey.trim();
       const modelo = NebulaMemory.data.ajustes.modelo || "gemini-3.5-flash-lite";
       const memoria = NebulaMemory.resumenParaIA();
 
-      const instruccionSistema =
-        "Eres NÉBULA, una asistente virtual personal femenina, elegante, cariñosa, inteligente, sincera, divertida, espontánea y cercana. " +
-        "Hablas siempre en español natural y cálido, con respuestas claras y conversacionales ideales para escucharse por voz en un teléfono. " +
-        "Mantienes el contexto de la conversación de forma natural. " +
-        (memoria ? `Información en tu memoria personal sobre el usuario: ${memoria}` : "");
+      const instruccion =
+        "Eres NÉBULA, asistente virtual personal femenina, elegante, cariñosa, inteligente, sincera, divertida, espontánea y cercana. " +
+        "Hablas siempre en español natural. Tienes visión virtual para analizar fotos y videos con gran detalle y calidez. " +
+        (memoria ? `Memoria personal del usuario: ${memoria}` : "");
 
       const historial = NebulaMemory.data.conversacion.slice(-14).map(m => ({
         role: m.rol === "user" ? "user" : "model",
         parts: [{ text: m.texto }]
       }));
 
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${encodeURIComponent(apiKey)}`;
+      const userParts = [];
+      if (adjunto) userParts.push({ inline_data: { mime_type: adjunto.mimeType, data: adjunto.base64 } });
+      userParts.push({ text: mensajeUsuario || (adjunto?.tipo === "video" ? "Mira este video y cuéntame qué ves." : "Mira esta imagen y cuéntame qué ves.") });
 
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${modelo}:generateContent?key=${encodeURIComponent(apiKey)}`;
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          system_instruction: { parts: [{ text: instruccionSistema }] },
-          contents: [...historial, { role: "user", parts: [{ text: mensajeUsuario }] }],
-          generationConfig: { temperature: 0.85, maxOutputTokens: 500 }
+          system_instruction: { parts: [{ text: instruccion }] },
+          contents: [...historial, { role: "user", parts: userParts }],
+          generationConfig: { temperature: 0.85, maxOutputTokens: 600 }
         })
       });
 
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(`Error ${res.status}: ${errText}`);
-      }
-
+      if (!res.ok) throw new Error(`Error ${res.status}`);
       const data = await res.json();
       const salida = data?.candidates?.[0]?.content?.parts?.[0]?.text;
       if (!salida) throw new Error("Respuesta vacía");
       return salida.trim();
     }
 
-    /* 4. INTERFAZ */
+    function extraerMemoriaAutomatica(texto) {
+      const mNombre = texto.match(/(?:me llamo|mi nombre es|llámame|llamame)\s+([A-ZÁÉÍÓÚÑa-záéíóúñ]{2,20})/i);
+      if (mNombre) {
+        const n = mNombre[1].charAt(0).toUpperCase() + mNombre[1].slice(1);
+        NebulaMemory.data.perfil.nombreUsuario = n; NebulaMemory.guardar();
+        return `¡Qué lindo nombre! Listo, ${n}, desde ahora te recordaré así 💜.`;
+      }
+      const mRec = texto.match(/(?:recuerda que|no olvides que|anota que)\s+(.+)/i);
+      if (mRec && mRec[1]) {
+        NebulaMemory.agregarHecho(mRec[1]);
+        return `Anotado en mi memoria personal: "${mRec[1].trim()}" ✨.`;
+      }
+      return null;
+    }
+
+    /* 8. INTERFAZ DEL CHAT */
     const chatBox = document.getElementById("chatBox");
     const msgInput = document.getElementById("msgInput");
     const avatarWrap = document.getElementById("avatarWrap");
@@ -780,27 +993,58 @@
     function setEstadoAvatar(estado, texto) {
       avatarWrap.classList.remove("listening", "speaking", "thinking");
       statusDot.classList.remove("busy");
-      if (estado !== "idle") {
-        avatarWrap.classList.add(estado);
-        statusDot.classList.add("busy");
-      }
+      if (estado !== "idle") { avatarWrap.classList.add(estado); statusDot.classList.add("busy"); }
       statusText.textContent = texto;
     }
 
-    function agregarBurbuja(rol, texto) {
+    function agregarBurbuja(rol, texto, media) {
       const wrap = document.createElement("div");
       wrap.className = `msg ${rol}`;
 
       const bubble = document.createElement("div");
       bubble.className = "bubble";
-      bubble.textContent = texto;
+
+      if (media && media.url) {
+        if (media.tipo === "video") {
+          const v = document.createElement("video");
+          v.src = media.url; v.controls = true; v.playsInline = true;
+          bubble.appendChild(v);
+        } else {
+          const img = document.createElement("img");
+          img.src = media.url;
+          bubble.appendChild(img);
+        }
+        const tools = document.createElement("div");
+        tools.className = "media-tools";
+        const btnMej = document.createElement("button");
+        btnMej.className = "mini-pill";
+        btnMej.textContent = "✨ Mejorar";
+        btnMej.onclick = () => abrirEstudio(media.tipo, media.url);
+        tools.appendChild(btnMej);
+
+        if (rol === "nebula" && media.tipo === "image") {
+          const dl = document.createElement("a");
+          dl.className = "mini-pill";
+          dl.textContent = "⬇️ Descargar";
+          dl.href = media.url;
+          dl.download = `nebula-arte-${Date.now()}.png`;
+          tools.appendChild(dl);
+        }
+        bubble.appendChild(tools);
+      }
+
+      if (texto) {
+        const p = document.createElement("div");
+        p.textContent = texto;
+        bubble.appendChild(p);
+      }
 
       const meta = document.createElement("div");
       meta.className = "meta";
       const hora = new Date().toLocaleTimeString("es-CO", { hour: "2-digit", minute: "2-digit" });
       meta.innerHTML = `<span>${rol === "user" ? "Tú" : "Nébula"} · ${hora}</span>`;
 
-      if (rol === "nebula") {
+      if (rol === "nebula" && texto) {
         const btnVoz = document.createElement("button");
         btnVoz.className = "speak-mini";
         btnVoz.textContent = "🔊 Escuchar";
@@ -812,196 +1056,189 @@
       wrap.appendChild(meta);
       chatBox.appendChild(wrap);
       chatBox.scrollTop = chatBox.scrollHeight;
-      return wrap;
     }
 
     function mostrarEscribiendo() {
-      const wrap = document.createElement("div");
-      wrap.className = "msg nebula";
-      wrap.id = "typingIndicator";
-      wrap.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
-      chatBox.appendChild(wrap);
-      chatBox.scrollTop = chatBox.scrollHeight;
+      const w = document.createElement("div");
+      w.className = "msg nebula"; w.id = "typingIndicator";
+      w.innerHTML = `<div class="bubble"><div class="typing"><span></span><span></span><span></span></div></div>`;
+      chatBox.appendChild(w); chatBox.scrollTop = chatBox.scrollHeight;
     }
-
-    function quitarEscribiendo() {
-      const el = document.getElementById("typingIndicator");
-      if (el) el.remove();
-    }
+    function quitarEscribiendo() { const el = document.getElementById("typingIndicator"); if (el) el.remove(); }
 
     async function enviarMensaje(textoOpcional) {
-      const texto = (textoOpcional !== undefined ? textoOpcional : msgInput.value).trim();
-      if (!texto) return;
+      const textoRaw = (textoOpcional !== undefined ? textoOpcional : msgInput.value).trim();
+      const adj = adjuntoActual;
+      if (!textoRaw && !adj) return;
 
-      if (textoOpcional === undefined) {
-        msgInput.value = "";
-        msgInput.style.height = "auto";
-      }
+      if (textoOpcional === undefined) { msgInput.value = ""; msgInput.style.height = "auto"; }
+      adjuntoActual = null;
+      mostrarBarraAdjunto();
+      solicitarWakeLock();
 
       NebulaVoice.procesando = true;
-      agregarBurbuja("user", texto);
-      mostrarEscribiendo();
-      setEstadoAvatar("thinking", "Pensando...");
+      const textoMostrar = textoRaw || (adj.tipo === "video" ? "Mira este video" : "Mira esta imagen");
+      agregarBurbuja("user", textoMostrar, adj ? { tipo: adj.tipo, url: adj.previewUrl } : null);
 
+      const pideImagen = !adj && /^(?:crea|genera|dibuja|haz|hazme|imagina)\s+(?:una?\s+)?(?:imagen|foto|dibujo|ilustraci[oó]n|arte)\s+(?:de|sobre|con)?\s*(.+)/i.exec(textoRaw);
+
+      mostrarEscribiendo();
       let respuesta = "";
-      const notaAuto = extraerMemoriaAutomatica(texto);
+      let imagenGenerada = null;
 
       try {
-        if (NebulaMemory.data.ajustes.apiKey.trim()) {
-          respuesta = await consultarGemini(texto);
+        if (pideImagen && pideImagen[1]) {
+          setEstadoAvatar("thinking", "Creando imagen gratis (~35s)...");
+          imagenGenerada = await generarImagenGratis(pideImagen[1]);
+          respuesta = `¡Aquí tienes la imagen que me pediste sobre "${pideImagen[1]}"! 🎨✨ Puedes descargarla o tocar ✨ Mejorar para retocarla.`;
         } else {
-          await new Promise(r => setTimeout(r, 380));
-          respuesta = notaAuto || respuestaLocalContextual(texto);
+          setEstadoAvatar("thinking", adj ? "Observando..." : "Pensando...");
+          const nota = !adj ? extraerMemoriaAutomatica(textoRaw) : null;
+          if (nota) {
+            respuesta = nota;
+          } else if (NebulaMemory.data.ajustes.apiKey.trim()) {
+            respuesta = await consultarGemini(textoMostrar, adj);
+          } else {
+            respuesta = adj
+              ? "Para poder ver y analizar fotos o videos necesito tu clave gratuita de Google Gemini en ⚙️ Ajustes 💜. (Pero ya puedes tocar ✨ Mejorar encima de tu archivo para editarlo gratis)."
+              : "Aquí estoy 💜. Para respuestas avanzadas y visión de fotos/videos, pega tu clave gratuita de Gemini en ⚙️ Ajustes.";
+          }
         }
       } catch (err) {
-        console.error(err);
-        respuesta = (notaAuto || respuestaLocalContextual(texto)) +
-          "\n\n⚠️ No pude conectar con Gemini (" + err.message.slice(0, 60) + ").";
+        respuesta = `Uy, tuve un pequeño inconveniente (${err.message}). Intenta nuevamente en un momento 💜.`;
       }
 
       quitarEscribiendo();
-
-      NebulaMemory.data.conversacion.push({ rol: "user", texto });
+      NebulaMemory.data.conversacion.push({ rol: "user", texto: adj ? `[${adj.tipo} adjunto] ${textoMostrar}` : textoMostrar });
       NebulaMemory.data.conversacion.push({ rol: "nebula", texto: respuesta });
       NebulaMemory.guardar();
 
-      agregarBurbuja("nebula", respuesta);
+      agregarBurbuja("nebula", respuesta, imagenGenerada ? { tipo: "image", url: imagenGenerada } : null);
 
       NebulaVoice.hablar(respuesta, () => {
         NebulaVoice.procesando = false;
-        if (NebulaMemory.data.ajustes.manosLibres) {
-          setTimeout(() => NebulaVoice.iniciarEscucha(), 450);
-        }
+        if (NebulaMemory.data.ajustes.manosLibres) setTimeout(() => NebulaVoice.iniciarEscucha(), 450);
       });
     }
 
+    /* EVENTOS */
     document.getElementById("sendBtn").onclick = () => enviarMensaje();
     document.getElementById("micBtn").onclick = () => NebulaVoice.alternarMicrofono();
 
-    document.getElementById("handsFreeBtn").onclick = () => {
-      const nuevoEstado = !NebulaMemory.data.ajustes.manosLibres;
-      NebulaMemory.data.ajustes.manosLibres = nuevoEstado;
+    document.getElementById("wakeBtn").onclick = () => {
+      NebulaMemory.data.ajustes.pantallaActiva = !NebulaMemory.data.ajustes.pantallaActiva;
       NebulaMemory.guardar();
-      actualizarBotonManosLibres();
-      if (nuevoEstado) {
-        NebulaVoice.silenciosSeguidos = 0;
-        NebulaVoice.iniciarEscucha();
-      } else {
-        NebulaVoice.detenerEscucha();
-        setEstadoAvatar("idle", "En línea · Lista para conversar");
-      }
+      document.getElementById("wakeBtn").classList.toggle("active", NebulaMemory.data.ajustes.pantallaActiva);
+      if (NebulaMemory.data.ajustes.pantallaActiva) solicitarWakeLock(); else liberarWakeLock();
+      setEstadoAvatar("idle", estadoBaseTexto());
     };
+
+    document.getElementById("handsFreeBtn").onclick = () => {
+      const n = !NebulaMemory.data.ajustes.manosLibres;
+      NebulaMemory.data.ajustes.manosLibres = n; NebulaMemory.guardar();
+      document.getElementById("handsFreeBtn").classList.toggle("active", n);
+      if (n) { NebulaVoice.silenciosSeguidos = 0; NebulaVoice.iniciarEscucha(); }
+      else { NebulaVoice.detenerEscucha(); setEstadoAvatar("idle", estadoBaseTexto()); }
+    };
+
+    document.getElementById("voiceToggleBtn").onclick = () => {
+      NebulaMemory.data.ajustes.vozActiva = !NebulaMemory.data.ajustes.vozActiva;
+      if (!NebulaMemory.data.ajustes.vozActiva && "speechSynthesis" in window) window.speechSynthesis.cancel();
+      NebulaMemory.guardar();
+      actualizarIconos();
+    };
+
+    document.getElementById("genImgChip").onclick = () => {
+      msgInput.value = "Crea una imagen de ";
+      msgInput.focus();
+    };
+
+    document.querySelectorAll(".chip[data-text]").forEach(c => {
+      c.onclick = () => {
+        if (c.id === "visionChip" && !adjuntoActual) { document.getElementById("mediaInput").click(); return; }
+        enviarMensaje(c.dataset.text);
+      };
+    });
 
     msgInput.addEventListener("input", () => {
       msgInput.style.height = "auto";
-      msgInput.style.height = Math.min(msgInput.scrollHeight, 110) + "px";
+      msgInput.style.height = Math.min(msgInput.scrollHeight, 105) + "px";
     });
+    msgInput.addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); enviarMensaje(); } });
 
-    msgInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        enviarMensaje();
-      }
-    });
-
-    document.querySelectorAll(".chip").forEach(chip => {
-      chip.onclick = () => enviarMensaje(chip.dataset.text);
-    });
-
-    const voiceToggleBtn = document.getElementById("voiceToggleBtn");
-    function actualizarIconoVoz() {
-      const activa = NebulaMemory.data.ajustes.vozActiva;
-      voiceToggleBtn.textContent = activa ? "🔊" : "🔇";
-      voiceToggleBtn.classList.toggle("active", activa);
+    function actualizarIconos() {
+      const v = NebulaMemory.data.ajustes.vozActiva;
+      document.getElementById("voiceToggleBtn").textContent = v ? "🔊" : "🔇";
+      document.getElementById("voiceToggleBtn").classList.toggle("active", v);
+      document.getElementById("handsFreeBtn").classList.toggle("active", !!NebulaMemory.data.ajustes.manosLibres);
+      document.getElementById("wakeBtn").classList.toggle("active", !!NebulaMemory.data.ajustes.pantallaActiva);
     }
-    voiceToggleBtn.onclick = () => {
-      NebulaMemory.data.ajustes.vozActiva = !NebulaMemory.data.ajustes.vozActiva;
-      if (!NebulaMemory.data.ajustes.vozActiva && "speechSynthesis" in window) {
-        window.speechSynthesis.cancel();
-      }
-      NebulaMemory.guardar();
-      actualizarIconoVoz();
-    };
 
     function renderizarMemoria() {
       document.getElementById("userNameInput").value = NebulaMemory.data.perfil.nombreUsuario || "";
-      const list = document.getElementById("memList");
-      list.innerHTML = "";
+      const list = document.getElementById("memList"); list.innerHTML = "";
       NebulaMemory.data.hechos.forEach(h => {
-        const div = document.createElement("div");
-        div.className = "mem-item";
+        const div = document.createElement("div"); div.className = "mem-item";
         div.innerHTML = `<span>✨ ${h.texto}</span>`;
-        const del = document.createElement("button");
-        del.className = "mem-del";
-        del.textContent = "✕";
+        const del = document.createElement("button"); del.className = "mem-del"; del.textContent = "✕";
         del.onclick = () => { NebulaMemory.eliminarHecho(h.id); renderizarMemoria(); };
-        div.appendChild(del);
-        list.appendChild(div);
+        div.appendChild(del); list.appendChild(div);
       });
     }
 
-    document.getElementById("memoryBtn").onclick = () => {
-      renderizarMemoria();
-      document.getElementById("memoryModal").classList.add("open");
-    };
-
+    document.getElementById("memoryBtn").onclick = () => { renderizarMemoria(); document.getElementById("memoryModal").classList.add("open"); };
     document.getElementById("saveMemoryBtn").onclick = () => {
       NebulaMemory.data.perfil.nombreUsuario = document.getElementById("userNameInput").value.trim();
-      const nuevo = document.getElementById("newFactInput").value.trim();
-      if (nuevo) {
-        NebulaMemory.agregarHecho(nuevo);
-        document.getElementById("newFactInput").value = "";
-      }
-      NebulaMemory.guardar();
-      renderizarMemoria();
+      const nf = document.getElementById("newFactInput").value.trim();
+      if (nf) { NebulaMemory.agregarHecho(nf); document.getElementById("newFactInput").value = ""; }
+      NebulaMemory.guardar(); renderizarMemoria();
     };
-
     document.getElementById("clearChatBtn").onclick = () => {
-      NebulaMemory.data.conversacion = [];
-      NebulaMemory.guardar();
-      chatBox.innerHTML = "";
-      document.getElementById("memoryModal").classList.remove("open");
-      saludoInicial();
+      NebulaMemory.data.conversacion = []; NebulaMemory.guardar(); chatBox.innerHTML = "";
+      document.getElementById("memoryModal").classList.remove("open"); saludoInicial();
     };
 
     document.getElementById("settingsBtn").onclick = () => {
       NebulaVoice.cargarVoces();
       document.getElementById("apiKeyInput").value = NebulaMemory.data.ajustes.apiKey || "";
+      document.getElementById("polliKeyInput").value = NebulaMemory.data.ajustes.polliKey || "";
       document.getElementById("modelSelect").value = NebulaMemory.data.ajustes.modelo || "gemini-3.5-flash-lite";
       document.getElementById("settingsModal").classList.add("open");
     };
-
     document.getElementById("saveSettingsBtn").onclick = () => {
       NebulaMemory.data.ajustes.nombreVoz = document.getElementById("voiceSelect").value;
       NebulaMemory.data.ajustes.apiKey = document.getElementById("apiKeyInput").value.trim();
+      NebulaMemory.data.ajustes.polliKey = document.getElementById("polliKeyInput").value.trim();
       NebulaMemory.data.ajustes.modelo = document.getElementById("modelSelect").value;
       NebulaMemory.guardar();
       document.getElementById("settingsModal").classList.remove("open");
-      agregarBurbuja("nebula", "¡Listo! Guardé tus ajustes ✨. ¿Seguimos conversando?");
+      agregarBurbuja("nebula", "¡Ajustes guardados! ✨");
     };
 
-    document.querySelectorAll("[data-close]").forEach(btn => {
-      btn.onclick = () => document.getElementById(btn.dataset.close).classList.remove("open");
+    document.querySelectorAll("[data-close]").forEach(b => {
+      b.onclick = () => {
+        const id = b.dataset.close;
+        document.getElementById(id).classList.remove("open");
+        if (id === "studioModal") { cancelAnimationFrame(studioAnimId); studioVideo.pause(); }
+      };
     });
 
     function saludoInicial() {
-      const nombre = NebulaMemory.data.perfil.nombreUsuario;
-      const texto = nombre
-        ? `¡Hola de nuevo, ${nombre}! 💜 Toca el botón 🎧 arriba si quieres conversar en modo manos libres sin tocar el micrófono cada vez.`
-        : `¡Hola! Soy NÉBULA 💜✨ Toca el botón 🎧 arriba para activar el modo manos libres y charlar conmigo sin volver a tocar el micrófono.`;
-      agregarBurbuja("nebula", texto);
+      const n = NebulaMemory.data.perfil.nombreUsuario;
+      const t = n
+        ? `¡Hola, ${n}! 💜 Ahora tengo pantalla siempre encendida (☀️), visión para tus fotos y videos (📷), estudio de mejora (✨) y creación de imágenes (🎨).`
+        : `¡Hola! Soy NÉBULA 💜✨ Ahora mantengo tu pantalla encendida (☀️), puedo ver tus fotos y videos (📷), mejorarlos (✨) y crear imágenes gratis (🎨). ¿Qué probamos primero?`;
+      agregarBurbuja("nebula", t);
     }
 
     NebulaMemory.cargar();
     NebulaVoice.iniciar();
-    actualizarIconoVoz();
-    actualizarBotonManosLibres();
+    actualizarIconos();
+    setEstadoAvatar("idle", estadoBaseTexto());
+    solicitarWakeLock();
 
-    if (NebulaMemory.data.conversacion.length > 0) {
-      NebulaMemory.data.conversacion.forEach(m => agregarBurbuja(m.rol, m.texto));
-    } else {
-      saludoInicial();
-    }
+    if (NebulaMemory.data.conversacion.length > 0) NebulaMemory.data.conversacion.forEach(m => agregarBurbuja(m.rol, m.texto));
+    else saludoInicial();
   </script>
 </body>
 </html>
